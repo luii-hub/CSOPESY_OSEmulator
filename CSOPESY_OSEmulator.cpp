@@ -104,10 +104,18 @@ void greetUser() {
     cout << color_bright_yellow(guide) << endl;
 }
 
-// TODO: Implement ASCII header
 void printHeader() {
     // ASCII header implementation
-    cout << "This is an example header" << endl;
+    cout << R"(
+   _____  _____  ____  _____  ______  _______     __
+  / ____|/ ____|/ __ \|  __ \|  ____|/ ____\ \   / /
+ | |    | (___ | |  | | |__) | |__  | (___  \ \_/ / 
+ | |     \___ \| |  | |  ___/|  __|  \___ \  \   /  
+ | |____ ____) | |__| | |    | |____ ____) |  | |   
+  \_____|_____/ \____/|_|    |______|_____/   |_|   
+                                                    
+                                                    
+)" << endl;
 }
 
 void executeCommand(string command) {
