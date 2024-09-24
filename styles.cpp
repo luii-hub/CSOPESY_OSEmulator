@@ -1,4 +1,5 @@
 #include "styles.h"
+using namespace std;
 
 // Color codes using ANSI escape sequences
 std::string color_red(const std::string& input) {
