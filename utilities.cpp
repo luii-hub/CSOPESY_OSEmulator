@@ -4,6 +4,8 @@
 #include "process.h"
 #include <iostream>
 #include <stdlib.h>
+#include <ctime>
+#include <chrono>
 
 using namespace std;
 
@@ -43,6 +45,7 @@ List of commands:
 )" << endl;
 }
 
+
 void executeCommand(string command) {
     if (command == "initialize") {
 		initialize();
@@ -69,6 +72,17 @@ void executeCommand(string command) {
 		exit();
 	}
 }
+
+
+std::string currentTime() {
+    time_t now = time(0);
+    tm localtm;
+    localtime_s(&localtm, &now);  // Use localtime_s instead of localtime
+    char buffer[100];
+    strftime(buffer, 100, "%m/%d/%Y, %I:%M:%S %p", &localtm);
+    return std::string(buffer);
+}
+
 // Test color and style functions
 void testStyleFunctions() {
     cout << "Testing color and style functions" << endl;

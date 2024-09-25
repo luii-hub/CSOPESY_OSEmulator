@@ -1,3 +1,4 @@
+#pragma once
 #ifndef utilities_h
 #define utilities_h
 
@@ -36,7 +37,7 @@ void testStyleFunctions();
  *
  * @param command The command string entered by the user.
  */
-void executeCommand(std::string command);
+//void executeCommand(std::string command);
 
 /* 
 * @brief Displays help information.
@@ -44,5 +45,9 @@ void executeCommand(std::string command);
 * This function displays a list of available commands and their descriptions.
 */
 void helpInfo();
+
+void executeCommand(string command);
+
+string currentTime();
 
 #endif // utilities_h

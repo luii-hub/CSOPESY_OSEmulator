@@ -5,8 +5,10 @@
 #include "styles.h"  // Include the header for color and style functions
 #include "utilities.h"  // Include the header for utility functions
 #include "process.h"  // Include the header for process functions
+#include "ConsoleManager.h"  // Include the header for console management functions
 
 using namespace std;
+
 
 int main()
 {

@@ -1,11 +1,12 @@
-#ifndef process_h
 #define process_h
-
+#pragma once
 #include <iostream>
 #include "styles.h"
 #include "utilities.h"
 #include <string>
 #include <stdlib.h>
+#include <map>
+#include "ConsoleManager.h"
 
 using namespace std;
 
@@ -58,4 +59,11 @@ void clear();
  */
 void exit();
 
-#endif // !process_h
+// Function declarations
+void screenStart(const std::string& name);
+void screenResume(const std::string& name);
+void screenList();
+void screenExit();
+
+extern std::map<std::string, ScreenSession*> sessionMap;
+
