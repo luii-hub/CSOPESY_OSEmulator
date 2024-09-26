@@ -132,7 +132,7 @@ void ConsoleManager::resumeSession(const std::string& name) {
         // If the user types 'exit', break the loop and return to the main menu
         if (command == "exit") {
             clear();
-            std::cout << "Returned to main menu...\n";
+            std::cout << "Returning to main menu...\n";
             break;
         }
         else {
