@@ -13,30 +13,25 @@ using namespace std;
 // Global instance of ConsoleManager to handle screen sessions
 ConsoleManager consoleManager;
 
-/**
- * @brief Initializes the system or application.
- *
- * This function is a placeholder for the initialization logic of the system.
- * It currently outputs a message indicating that initialization is in progress.
- */
-void initialize() {
-    cout << "initialize command recognized. Doing something." << endl;
-}
 
 /**
- * @brief Handles screen-related functionality.
+ * @brief Executes the command entered by the user.
  *
- * This function deals with screen management commands such as starting, resuming,
- * and listing screen sessions. It processes the user input and calls the appropriate
- * methods from the ConsoleManager class.
+ * This function takes the user input and executes the corresponding function
+ * based on the command. It checks the command and calls helper functions
+ * like `initialize()`, `screen()`, `scheduler_test()`, and others.
+ *
+ * @param command The command string entered by the user.
  */
-void screen() {
-    std::string command;
-    std::cout << "Enter screen command (-s, -r, -ls): ";
-    std::getline(std::cin, command);  // Get the user input for screen commands
-
+void executeCommand(string command) {
+    if (command == "initialize") {
+        initialize();  // Calls the function to initialize the system
+    }
+    else if (command == "help") {
+        helpInfo();  // Displays the help information
+    }
     // Check if the command is to start a new screen session
-    if (command == "screen -s") {
+    else if (command == "screen -s") {
         std::cout << "Error: Missing process name. Usage: screen -s <name>\n";
     }
     // Check if the command is to resume an existing screen session
@@ -57,9 +52,48 @@ void screen() {
     else if (command == "screen -ls") {
         consoleManager.listSessions();  // List all active sessions
     }
-    else {
-        std::cout << "Unknown screen command.\n";  // Invalid command entered
+    else if (command == "scheduler-test") {
+        scheduler_test();  // Calls the scheduler test function
     }
+    else if (command == "scheduler-stop") {
+        scheduler_stop();  // Calls the function to stop the scheduler
+    }
+    else if (command == "report-util") {
+        report_until();  // Calls the report generation utility
+    }
+    else if (command == "clear") {
+        clear();  // Clears the screen
+    }
+    else if (command == "exit") {
+        exit();  // Exits the program
+    }
+    else {
+		cout << "Command not recognized. Type 'help' to see the list of available commands." << endl;
+	}
+}
+
+/**
+ * @brief Initializes the system or application.
+ *
+ * This function is a placeholder for the initialization logic of the system.
+ * It currently outputs a message indicating that initialization is in progress.
+ */
+void initialize() {
+    cout << "initialize command recognized. Doing something." << endl;
+}
+
+/* Depracated */
+/**
+ * @brief Handles screen-related functionality.
+ *
+ * This function deals with screen management commands such as starting, resuming,
+ * and listing screen sessions. It processes the user input and calls the appropriate
+ * methods from the ConsoleManager class.
+ */
+void screen() {
+    std::string command;
+    std::cout << "Enter screen command (-s, -r, -ls): ";
+    std::getline(std::cin, command);  // Get the user input for screen commands
 }
 
 /**

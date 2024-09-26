@@ -63,41 +63,6 @@ List of commands:
 )" << endl;
 }
 
-/**
- * @brief Executes the command entered by the user.
- *
- * This function takes the user input and executes the corresponding function
- * based on the command. It checks the command and calls helper functions
- * like `initialize()`, `screen()`, `scheduler_test()`, and others.
- *
- * @param command The command string entered by the user.
- */
-void executeCommand(string command) {
-    if (command == "initialize") {
-        initialize();  // Calls the function to initialize the system
-    }
-    else if (command == "help") {
-        helpInfo();  // Displays the help information
-    }
-    else if (command == "screen") {
-        screen();  // Opens the screen management system
-    }
-    else if (command == "scheduler-test") {
-        scheduler_test();  // Calls the scheduler test function
-    }
-    else if (command == "scheduler-stop") {
-        scheduler_stop();  // Calls the function to stop the scheduler
-    }
-    else if (command == "report-util") {
-        report_until();  // Calls the report generation utility
-    }
-    else if (command == "clear") {
-        clear();  // Clears the screen
-    }
-    else if (command == "exit") {
-        exit();  // Exits the program
-    }
-}
 
 /**
  * @brief Returns the current system time as a formatted string.
