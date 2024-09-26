@@ -69,6 +69,7 @@ void ConsoleManager::startSession(const std::string& name) {
 
     // Create a new session
     ScreenSession newSession;
+    newSession.sessionId = nextSessionId++; // Assign a unique session ID
     newSession.processName = name;
     newSession.currentLine = 0; // Start from the first line
     newSession.totalLine = 100; // Set the total number of lines to 100
@@ -80,7 +81,11 @@ void ConsoleManager::startSession(const std::string& name) {
     sessionThreads[name] = std::thread(&ConsoleManager::runSession, this, name);
     sessionThreads[name].detach();  // Detach thread to allow it to run independently
 
-    std::cout << "Started new session '" << name << "'\n"; // Confirm that the session has started
+    std::cout << "Started new session '" << name << "' (ID: " << newSession.sessionId << ")\n"; // Confirm that the session has started
+
+    // Display the current session status with the ID at the top
+    std::cout << "ID: " << newSession.sessionId << " | Process: " << newSession.processName
+        << " | Current Line: " << newSession.currentLine << " / " << newSession.totalLine << "\n";
 }
 
 /*
@@ -110,8 +115,8 @@ void ConsoleManager::resumeSession(const std::string& name) {
     // Access the session data
     ScreenSession& session = sessions[name];
 
-    // Display the session details
-    std::cout << "Resuming session '" << session.processName << "'\n";
+    // Display the session details with the ID at the top
+    std::cout << "ID: " << session.sessionId << " | Resuming session '" << session.processName << "'\n";
     std::cout << "Current Line: " << session.currentLine << " / " << session.totalLine << "\n";
     std::cout << "Timestamp: " << session.timestamp << "\n";
     std::cout << "\nType 'exit' to return to the main menu.\n";
@@ -127,7 +132,7 @@ void ConsoleManager::resumeSession(const std::string& name) {
         // If the user types 'exit', break the loop and return to the main menu
         if (command == "exit") {
             clear();
-            std::cout << "Returning to main menu...\n";
+            std::cout << "Returned to main menu...\n";
             break;
         }
         else {
@@ -154,7 +159,8 @@ void ConsoleManager::listSessions() {
     std::cout << "Active sessions:\n";
     for (const auto& pair : sessions) {
         const ScreenSession& session = pair.second;
-        std::cout << "- " << session.processName << " | Current Line: " << session.currentLine
+        std::cout << "- ID: " << session.sessionId << " | " << session.processName
+            << " | Current Line: " << session.currentLine
             << " / " << session.totalLine << " | Created: " << session.timestamp << "\n";
     }
 }
@@ -175,6 +181,6 @@ void ConsoleManager::terminateSession(const std::string& name) {
 
     // Mark the session as inactive and remove it from the sessions map
     sessions[name].isActive = false;
-    std::cout << "Session '" << name << "' terminated.\n";
+    std::cout << "Session '" << name << "' (ID: " << sessions[name].sessionId << ") terminated.\n";
     sessions.erase(name);  // Remove session from the map
 }
