@@ -10,6 +10,7 @@
 /*
     Struct to hold information about each screen session.
     Fields:
+        - sessionId: Unique identifier for the session.
         - processName: The name of the session or process.
         - currentLine: The current instruction being executed.
         - totalLine: Total number of instructions in the process.
@@ -17,6 +18,7 @@
         - isActive: A flag indicating if the session is still active.
 */
 struct ScreenSession {
+    int sessionId;
     std::string processName;
     int currentLine = 0;      // Initialize currentLine to 0
     int totalLine = 100;      // Initialize totalLine to 100 (or default value)
@@ -47,7 +49,7 @@ public:
     void resumeSession(const std::string& name);
 
     /*
-        List all active sessions with details (process name, current line, total line, and timestamp).
+        List all active sessions with details (session ID, process name, current line, total line, and timestamp).
     */
     void listSessions();
 
@@ -66,6 +68,9 @@ private:
 
     // Mutex to ensure thread-safe access to sessions and threads
     std::mutex sessionMutex;
+
+    // Variable to generate unique session IDs
+    int nextSessionId = 1;
 
     /*
         Function that simulates running the session by incrementing the current line until the process is complete.
