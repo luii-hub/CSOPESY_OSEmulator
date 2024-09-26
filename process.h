@@ -61,11 +61,19 @@ void report_until();
 void clear();
 
 /**
+ * @brief Clears the console screen without printing the header.
+ *
+ * This function clears the terminal screen using ANSI escape codes.
+ */
+void clearScreenAndHeader();
+
+/**
  * @brief Exits the application.
  *
  * This function gracefully terminates the command-line application and
  * performs any necessary cleanup before the program exits.
  */
+
 void exit();
 
 /**

@@ -139,6 +139,15 @@ void clear() {
 }
 
 /**
+ * @brief Clears the console screen without printing the header.
+ *
+ * This function clears the terminal screen using ANSI escape codes.
+ */
+void clearScreenAndHeader() {
+    std::cout << "\033[2J\033[H";  // ANSI escape code to clear the screen
+}
+
+/**
  * @brief Exits the application.
  *
  * This function terminates the application. It calls the `exit()` function from

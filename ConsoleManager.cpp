@@ -2,6 +2,7 @@
 #include <iostream>
 #include <ctime>
 #include <iomanip>
+#include "process.h"
 
 /*
     ConsoleManager constructor.
@@ -103,6 +104,9 @@ void ConsoleManager::resumeSession(const std::string& name) {
         return;
     }
 
+    // Clear the screen before resuming the session
+    clearScreenAndHeader();  // Clears the screen
+
     // Access the session data
     ScreenSession& session = sessions[name];
 
@@ -115,10 +119,14 @@ void ConsoleManager::resumeSession(const std::string& name) {
     // Enter a loop that only accepts 'exit' as a valid command to return to the main menu
     std::string command;
     while (true) {
+        // Display custom prompt "root:\>" before each command
+        std::cout << "root:\\> ";  // Custom prompt for the process screen
+
         std::getline(std::cin, command); // Wait for user input
 
         // If the user types 'exit', break the loop and return to the main menu
         if (command == "exit") {
+            clear();
             std::cout << "Returning to main menu...\n";
             break;
         }
