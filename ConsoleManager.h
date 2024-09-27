@@ -4,85 +4,81 @@
 #include <string>
 #include <map>
 #include <thread>
-#include <chrono>
 #include <mutex>
+#include "ScreenSession.h"
 
-/*
-    Struct to hold information about each screen session.
-    Fields:
-        - sessionId: Unique identifier for the session.
-        - processName: The name of the session or process.
-        - currentLine: The current instruction being executed.
-        - totalLine: Total number of instructions in the process.
-        - timestamp: The time when the session was created.
-        - isActive: A flag indicating if the session is still active.
-*/
-struct ScreenSession {
-    int sessionId;
-    std::string processName;
-    int currentLine = 0;      // Initialize currentLine to 0
-    int totalLine = 100;      // Initialize totalLine to 100 (or default value)
-    std::string timestamp;
-    bool isActive = true;     // Initialize isActive to true by default
-};
-
-/*
-    ConsoleManager class manages multiple screen sessions.
-    It allows starting, resuming, listing, and terminating screen sessions.
-*/
+/**
+ * @brief The ConsoleManager class manages the lifecycle of screen sessions.
+ * This class provides functionality to start, resume, list, and terminate sessions.
+ * Each session simulates the execution of a process and tracks its progress.
+ */
 class ConsoleManager {
 public:
-    ConsoleManager();  // Constructor
+    /**
+     * @brief Constructor for ConsoleManager.
+     * Initializes a ConsoleManager object.
+     */
+    ConsoleManager();
 
-    /*
-        Start a new session with the specified name.
-        Creates a new session, initializes it, and runs it in a detached thread.
-        Param: name - the name of the session.
-    */
+    /**
+     * @brief Starts a new session with the specified name.
+     * Checks if the session name already exists and runs the session in a background thread.
+     *
+     * @param name The name of the session to start.
+     */
     void startSession(const std::string& name);
 
-    /*
-        Resume an existing session with the specified name.
-        Displays the current status of the session and restricts the user to the session until they exit.
-        Param: name - the name of the session.
-    */
+    /**
+     * @brief Resumes an existing session with the specified name.
+     * Displays the current status of the session and allows user interaction.
+     *
+     * @param name The name of the session to resume.
+     */
     void resumeSession(const std::string& name);
 
-    /*
-        List all active sessions with details (session ID, process name, current line, total line, and timestamp).
-    */
+    /**
+     * @brief Lists all active sessions.
+     * Displays each session's ID, process name, current line, total line, and creation timestamp.
+     */
     void listSessions();
 
-    /*
-        Terminate a session by marking it as inactive and removing it from the active list.
-        Param: name - the name of the session to terminate.
-    */
+    /**
+     * @brief Terminates a session with the specified name.
+     * Marks the session as inactive and removes it from the list of active sessions.
+     *
+     * @param name The name of the session to terminate.
+     */
     void terminateSession(const std::string& name);
 
 private:
-    // Map of session names to ScreenSession objects
-    std::map<std::string, ScreenSession> sessions;
-
-    // Map of session names to their corresponding threads
-    std::map<std::string, std::thread> sessionThreads;
-
-    // Mutex to ensure thread-safe access to sessions and threads
-    std::mutex sessionMutex;
-
-    // Variable to generate unique session IDs
-    int nextSessionId = 1;
-
-    /*
-        Function that simulates running the session by incrementing the current line until the process is complete.
-        Param: name - the name of the session to run.
-    */
+    /**
+     * @brief Simulates the execution of a session.
+     * Runs in a background thread and increments the `currentLine` until completion or termination.
+     *
+     * @param name The name of the session being run.
+     */
     void runSession(const std::string& name);
 
-    /*
-        Get the current system timestamp as a formatted string.
-        Return: The current timestamp in "MM/DD/YYYY, HH:MM:SS AM/PM" format.
-    */
+    /**
+     * @brief Gets the current system timestamp as a string.
+     * Formats the timestamp as "MM/DD/YYYY, HH:MM:SS AM/PM".
+     *
+     * @return The current timestamp as a formatted string.
+     */
     std::string getCurrentTimestamp();
+
+
+    // Mutex for thread-safe access to the sessions map
+    std::mutex sessionMutex;
+
+    // A map that holds all active screen sessions, keyed by session name
+    std::map<std::string, ScreenSession> sessions;
+
+    // A map that stores the threads running the session processes
+    std::map<std::string, std::thread> sessionThreads;
+
+    // The ID for the next session to be created
+    int nextSessionId = 1;
 };
 
-#endif
+#endif // CONSOLEMANAGER_H

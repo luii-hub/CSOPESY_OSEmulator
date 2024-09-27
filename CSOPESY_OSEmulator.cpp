@@ -7,6 +7,7 @@
 #include "utilities.h"  // Include the header for utility functions
 #include "process.h"  // Include the header for process functions
 #include "ConsoleManager.h"  // Include the header for console management functions
+#include "ScreenSession.h"
 
 using namespace std;
 

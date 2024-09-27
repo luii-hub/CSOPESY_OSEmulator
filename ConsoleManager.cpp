@@ -1,186 +1,160 @@
 #include "ConsoleManager.h"
-#include <iostream>
-#include <ctime>
-#include <iomanip>
 #include "process.h"
+#include <iostream>
+#include <chrono>
+#include <thread>
+#include <ctime>
 
-/*
-    ConsoleManager constructor.
-    Initializes the ConsoleManager object with no additional actions.
-*/
+/**
+ * @brief ConsoleManager constructor.
+ * Initializes a ConsoleManager object.
+ */
 ConsoleManager::ConsoleManager() {
-    // Constructor
+    // Initialize if necessary
 }
 
-/*
-    Get the current system timestamp as a string.
-    This function formats the time in "MM/DD/YYYY, HH:MM:SS AM/PM".
-    Return: The current timestamp as a formatted string.
-*/
+/**
+ * @brief Get the current system timestamp as a string.
+ * Formats the time as "MM/DD/YYYY, HH:MM:SS AM/PM".
+ *
+ * @return The current timestamp as a formatted string.
+ */
 std::string ConsoleManager::getCurrentTimestamp() {
-    time_t now = time(0); // Get current system time
+    time_t now = time(0);
     tm localtm;
-    localtime_s(&localtm, &now); // Convert to local time
+    localtime_s(&localtm, &now);
     char buffer[100];
-    strftime(buffer, 100, "%m/%d/%Y, %I:%M:%S %p", &localtm); // Format the time
-    return std::string(buffer); // Return the formatted string
+    strftime(buffer, 100, "%m/%d/%Y, %I:%M:%S %p", &localtm);
+    return std::string(buffer);
 }
 
-/*
-    Function that simulates the execution of a session.
-    It runs in a background thread and increments `currentLine` until it reaches `totalLine` or until the session is terminated.
-    Param: name - the name of the session being run.
-*/
+/**
+ * @brief Simulate the execution of a session.
+ * Runs in a background thread, increments the `currentLine`, and terminates if necessary.
+ *
+ * @param name The name of the session being run.
+ */
 void ConsoleManager::runSession(const std::string& name) {
     while (true) {
-        std::this_thread::sleep_for(std::chrono::seconds(1)); // Simulate a delay between each line execution
-        std::lock_guard<std::mutex> lock(sessionMutex); // Lock mutex to ensure thread safety
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        std::lock_guard<std::mutex> lock(sessionMutex);
 
-        // If session is no longer active, exit the loop
-        if (!sessions[name].isActive) break;
+        if (!sessions[name].getIsActive()) break;
 
-        // Increment currentLine if it's less than totalLine
-        if (sessions[name].currentLine < sessions[name].totalLine) {
-            sessions[name].currentLine++;  // Simulate process execution by incrementing the line number
+        if (sessions[name].getCurrentLine() < sessions[name].getTotalLine()) {
+            sessions[name].setCurrentLine(sessions[name].getCurrentLine() + 1);
         }
     }
 }
 
-/*
-    Start a new session with the specified name.
-    This function checks for valid input and whether the session name already exists.
-    If valid, it initializes a new session and runs it in a detached background thread.
-    Param: name - the name of the session to start.
-*/
+/**
+ * @brief Start a new session with the given name.
+ * Initializes the session, assigns it a unique ID, and runs it in a background thread.
+ *
+ * @param name The name of the session to start.
+ */
 void ConsoleManager::startSession(const std::string& name) {
-    std::lock_guard<std::mutex> lock(sessionMutex); // Lock mutex to ensure thread safety
+    std::lock_guard<std::mutex> lock(sessionMutex);
 
-    // Check if the session name is provided
     if (name.empty()) {
         std::cout << "Error: Missing process name. Usage: screen -s <name>\n";
         return;
     }
 
-    // Check if the session name already exists
     if (sessions.find(name) != sessions.end()) {
-        std::cout << "Session with name '" << name << "' already exists.\n";
+        std::cout << "Session '" << name << "' already exists.\n";
         return;
     }
 
-    // Create a new session
-    ScreenSession newSession;
-    newSession.sessionId = nextSessionId++; // Assign a unique session ID
-    newSession.processName = name;
-    newSession.currentLine = 0; // Start from the first line
-    newSession.totalLine = 100; // Set the total number of lines to 100
-    newSession.timestamp = getCurrentTimestamp(); // Get the session creation timestamp
-    newSession.isActive = true; // Mark the session as active
-    sessions[name] = newSession; // Store the new session in the sessions map
+    ScreenSession newSession(name);
+    newSession.setSessionId(nextSessionId++);
+    sessions[name] = std::move(newSession);
 
-    // Start the session in a background thread and detach it
     sessionThreads[name] = std::thread(&ConsoleManager::runSession, this, name);
-    sessionThreads[name].detach();  // Detach thread to allow it to run independently
+    sessionThreads[name].detach();
 
-    std::cout << "Started new session '" << name << "' (ID: " << newSession.sessionId << ")\n"; // Confirm that the session has started
-
-    // Display the current session status with the ID at the top
-    std::cout << "ID: " << newSession.sessionId << " | Process: " << newSession.processName
-        << " | Current Line: " << newSession.currentLine << " / " << newSession.totalLine << "\n";
+    std::cout << "Started new session '" << sessions[name].getProcessName()
+        << "' with ID: " << sessions[name].getSessionId() << std::endl;
 }
 
-/*
-    Resume an existing session with the specified name.
-    Displays the current status of the session (process name, current line, total line, and timestamp).
-    The user can only exit the session by typing "exit".
-    Param: name - the name of the session to resume.
-*/
+/**
+ * @brief Resume an existing session.
+ * Clears the screen, restores the session's history, and allows interaction.
+ *
+ * @param name The name of the session to resume.
+ */
 void ConsoleManager::resumeSession(const std::string& name) {
-    std::lock_guard<std::mutex> lock(sessionMutex); // Lock mutex to ensure thread safety
+    std::lock_guard<std::mutex> lock(sessionMutex);
 
-    // Check if the session name is provided
-    if (name.empty()) {
-        std::cout << "Error: Missing process name. Usage: screen -r <name>\n";
-        return;
-    }
-
-    // Check if the session exists
     if (sessions.find(name) == sessions.end()) {
         std::cout << "No session found with name '" << name << "'\n";
         return;
     }
 
-    // Clear the screen before resuming the session
-    clearScreenAndHeader();  // Clears the screen
+    clearScreenAndHeader();
 
-    // Access the session data
     ScreenSession& session = sessions[name];
 
-    // Display the session details with the ID at the top
-    std::cout << "ID: " << session.sessionId << " | Resuming session '" << session.processName << "'\n";
-    std::cout << "Current Line: " << session.currentLine << " / " << session.totalLine << "\n";
-    std::cout << "Timestamp: " << session.timestamp << "\n";
-    std::cout << "\nType 'exit' to return to the main menu.\n";
+    if (!session.getIsActive()) {
+        session.setIsActive(true);
+    }
 
-    // Enter a loop that only accepts 'exit' as a valid command to return to the main menu
+    // Print session history and status
+    session.resume();
+
+    // Enter a loop that allows interaction with only the "exit" command
     std::string command;
     while (true) {
-        // Display custom prompt "root:\>" before each command
         std::cout << "root:\\> ";  // Custom prompt for the process screen
+        std::getline(std::cin, command);
 
-        std::getline(std::cin, command); // Wait for user input
-
-        // If the user types 'exit', break the loop and return to the main menu
         if (command == "exit") {
             clear();
             std::cout << "Returning to main menu...\n";
             break;
         }
         else {
-            // If any other command is entered, notify the user that only 'exit' is valid
+            session.addToHistory(command); // Save the entered command in the session history
             std::cout << "Unknown command. Type 'exit' to return to the main menu.\n";
         }
     }
 }
 
-/*
-    List all active sessions.
-    Displays the process name, current line, total line, and the creation timestamp for each active session.
-*/
+/**
+ * @brief List all active sessions.
+ * Displays the session ID, process name, and timestamp.
+ */
 void ConsoleManager::listSessions() {
-    std::lock_guard<std::mutex> lock(sessionMutex); // Lock mutex to ensure thread safety
+    std::lock_guard<std::mutex> lock(sessionMutex);
 
-    // If no sessions are active, inform the user
     if (sessions.empty()) {
         std::cout << "No active sessions.\n";
         return;
     }
 
-    // Display each session's details
-    std::cout << "Active sessions:\n";
     for (const auto& pair : sessions) {
         const ScreenSession& session = pair.second;
-        std::cout << "- ID: " << session.sessionId << " | " << session.processName
-            << " | Current Line: " << session.currentLine
-            << " / " << session.totalLine << " | Created: " << session.timestamp << "\n";
+        std::cout << "- ID: " << session.getSessionId()
+            << " | " << session.getProcessName()
+            << " | Created: " << session.getTimestamp() << "\n";
     }
 }
 
-/*
-    Terminate a session with the specified name.
-    Marks the session as inactive and removes it from the list of active sessions.
-    Param: name - the name of the session to terminate.
-*/
+/**
+ * @brief Terminate a session by name.
+ * Marks the session as inactive and removes it from the list of active sessions.
+ *
+ * @param name The name of the session to terminate.
+ */
 void ConsoleManager::terminateSession(const std::string& name) {
-    std::lock_guard<std::mutex> lock(sessionMutex); // Lock mutex to ensure thread safety
+    std::lock_guard<std::mutex> lock(sessionMutex);
 
-    // Check if the session exists
     if (sessions.find(name) == sessions.end()) {
         std::cout << "No session found with name '" << name << "'\n";
         return;
     }
 
-    // Mark the session as inactive and remove it from the sessions map
-    sessions[name].isActive = false;
-    std::cout << "Session '" << name << "' (ID: " << sessions[name].sessionId << ") terminated.\n";
-    sessions.erase(name);  // Remove session from the map
+    sessions[name].setIsActive(false);
+    std::cout << "Session '" << name << "' terminated.\n";
+    sessions.erase(name);
 }
