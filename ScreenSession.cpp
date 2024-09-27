@@ -163,12 +163,18 @@ void ScreenSession::setCurrentLine(int line) {
  */
 void ScreenSession::resume() {
     if (isActive) {
-        std::cout << "Resuming session '" << processName << "'...\n";
+        // Display session details
+        std::cout << "ID: " << sessionId << " | Resuming session '" << processName << "'\n";
+        std::cout << "Current Line: " << currentLine << " / " << totalLine << "\n";
+        std::cout << "Timestamp: " << timestamp << "\n\n";
+
+        // Print session history
         printHistory();
-        std::cout << "Session is running. Current line: " << currentLine
-            << " / " << totalLine << std::endl;
+
+        std::cout << "Type 'exit' to return to the main menu.\n";
     }
 }
+
 
 /**
  * @brief Add a command to the session history.
