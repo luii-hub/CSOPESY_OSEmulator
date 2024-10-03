@@ -46,6 +46,8 @@ int main()
 
         // Pass the command to the executeCommand function for processing
         executeCommand(command);
+
+        string test = "test commit";
     }
 
 }
