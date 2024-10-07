@@ -127,14 +127,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AConsole.cpp" />
     <ClCompile Include="ConsoleManager.cpp" />
     <ClCompile Include="CSOPESY_OSEmulator.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="process.cpp" />
     <ClCompile Include="styles.cpp" />
     <ClCompile Include="utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AConsole.h" />
     <ClInclude Include="ConsoleManager.h" />
+    <ClInclude Include="MainMenu.h" />
     <ClInclude Include="process.h" />
     <ClInclude Include="styles.h" />
     <ClInclude Include="utilities.h" />
