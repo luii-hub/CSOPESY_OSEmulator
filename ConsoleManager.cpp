@@ -1,172 +1,141 @@
 #include "ConsoleManager.h"
-#include <iostream>
-#include <ctime>
-#include <iomanip>
+#include "MainMenu.h"
+#include "Marquee.h"
+#include "ConfigurationManager.h"
+#include "Scheduler.h"
+#include "Process.h"
+#include "ProcessScreen.h"
 
-/*
-    ConsoleManager constructor.
-    Initializes the ConsoleManager object with no additional actions.
-*/
+#include <random>
+
 ConsoleManager::ConsoleManager() {
-    // Constructor
+	auto MAIN_MENU = std::make_shared<MainMenu>();
+	consoles[MAIN_MENU->getName()] = MAIN_MENU;
+
+	auto MARQUEE_SCREEN = std::make_shared<Marquee>();
+	consoles[MARQUEE_SCREEN->getName()] = MARQUEE_SCREEN;
+
+	currentConsole = MAIN_MENU;
 }
 
-/*
-    Get the current system timestamp as a string.
-    This function formats the time in "MM/DD/YYYY, HH:MM:SS AM/PM".
-    Return: The current timestamp as a formatted string.
-*/
-std::string ConsoleManager::getCurrentTimestamp() {
-    time_t now = time(0); // Get current system time
-    tm localtm;
-    localtime_s(&localtm, &now); // Convert to local time
-    char buffer[100];
-    strftime(buffer, 100, "%m/%d/%Y, %I:%M:%S %p", &localtm); // Format the time
-    return std::string(buffer); // Return the formatted string
+ConsoleManager::~ConsoleManager()
+{
 }
 
-/*
-    Function that simulates the execution of a session.
-    It runs in a background thread and increments `currentLine` until it reaches `totalLine` or until the session is terminated.
-    Param: name - the name of the session being run.
-*/
-void ConsoleManager::runSession(const std::string& name) {
-    while (true) {
-        std::this_thread::sleep_for(std::chrono::seconds(1)); // Simulate a delay between each line execution
-        std::lock_guard<std::mutex> lock(sessionMutex); // Lock mutex to ensure thread safety
-
-        // If session is no longer active, exit the loop
-        if (!sessions[name].isActive) break;
-
-        // Increment currentLine if it's less than totalLine
-        if (sessions[name].currentLine < sessions[name].totalLine) {
-            sessions[name].currentLine++;  // Simulate process execution by incrementing the line number
-        }
-    }
+void ConsoleManager::run()
+{	
+	// Main loop
+	if (currentConsole) {
+		currentConsole->onExecute();
+	}
 }
 
-/*
-    Start a new session with the specified name.
-    This function checks for valid input and whether the session name already exists.
-    If valid, it initializes a new session and runs it in a detached background thread.
-    Param: name - the name of the session to start.
-*/
-void ConsoleManager::startSession(const std::string& name) {
-    std::lock_guard<std::mutex> lock(sessionMutex); // Lock mutex to ensure thread safety
+void ConsoleManager::switchScreen(const std::string consoleName) {
 
-    // Check if the session name is provided
-    if (name.empty()) {
-        std::cout << "Error: Missing process name. Usage: screen -s <name>\n";
-        return;
-    }
+	// For process screens
+	if (consoleName.substr(0, 15) == "PROCESS_SCREEN_") {
+		std::string processName = consoleName.substr(15);
 
-    // Check if the session name already exists
-    if (sessions.find(name) != sessions.end()) {
-        std::cout << "Session with name '" << name << "' already exists.\n";
-        return;
-    }
+		if (resourceManager.processExists(processName)) {
+			
+			// Check if process is finished
+			std::shared_ptr<Process> process = resourceManager.findProcessByName(processName);
+			
+			if (!process->isFinished()) {
+				previousConsole = currentConsole;
+				currentConsole = consoles[consoleName];
+				system("cls");
+				currentConsole->onExecute();
+			}
+			else {
+				std::cerr << "Process " << processName << " has already finished." << std::endl;
+			}
+		}
+		else {
+			std::cerr << "Process " << processName << " not found." << std::endl;
+		}
+	}
 
-    // Create a new session
-    ScreenSession newSession;
-    newSession.processName = name;
-    newSession.currentLine = 0; // Start from the first line
-    newSession.totalLine = 100; // Set the total number of lines to 100
-    newSession.timestamp = getCurrentTimestamp(); // Get the session creation timestamp
-    newSession.isActive = true; // Mark the session as active
-    sessions[name] = newSession; // Store the new session in the sessions map
-
-    // Start the session in a background thread and detach it
-    sessionThreads[name] = std::thread(&ConsoleManager::runSession, this, name);
-    sessionThreads[name].detach();  // Detach thread to allow it to run independently
-
-    std::cout << "Started new session '" << name << "'\n"; // Confirm that the session has started
+	// For non-process screens (should be removed after Group HW)
+	else {
+		if (consoles.find(consoleName) != consoles.end()) {
+			previousConsole = currentConsole;
+			currentConsole = consoles[consoleName];
+			system("cls");
+			currentConsole->onExecute();
+		}
+		else {
+			std::cerr << "Console " << consoleName << " not found." << std::endl;
+		}
+	}
 }
 
-/*
-    Resume an existing session with the specified name.
-    Displays the current status of the session (process name, current line, total line, and timestamp).
-    The user can only exit the session by typing "exit".
-    Param: name - the name of the session to resume.
-*/
-void ConsoleManager::resumeSession(const std::string& name) {
-    std::lock_guard<std::mutex> lock(sessionMutex); // Lock mutex to ensure thread safety
-
-    // Check if the session name is provided
-    if (name.empty()) {
-        std::cout << "Error: Missing process name. Usage: screen -r <name>\n";
-        return;
-    }
-
-    // Check if the session exists
-    if (sessions.find(name) == sessions.end()) {
-        std::cout << "No session found with name '" << name << "'\n";
-        return;
-    }
-
-    // Access the session data
-    ScreenSession& session = sessions[name];
-
-    // Display the session details
-    std::cout << "Resuming session '" << session.processName << "'\n";
-    std::cout << "Current Line: " << session.currentLine << " / " << session.totalLine << "\n";
-    std::cout << "Timestamp: " << session.timestamp << "\n";
-    std::cout << "\nType 'exit' to return to the main menu.\n";
-
-    // Enter a loop that only accepts 'exit' as a valid command to return to the main menu
-    std::string command;
-    while (true) {
-        std::getline(std::cin, command); // Wait for user input
-
-        // If the user types 'exit', break the loop and return to the main menu
-        if (command == "exit") {
-            std::cout << "Returning to main menu...\n";
-            break;
-        }
-        else {
-            // If any other command is entered, notify the user that only 'exit' is valid
-            std::cout << "Unknown command. Type 'exit' to return to the main menu.\n";
-        }
-    }
+void ConsoleManager::setInitialized() {
+	if (configManager.initialize() && resourceManager.initialize(&configManager)) {
+		std::cout << "Initialization successful..." << std::endl;
+	}
 }
 
-/*
-    List all active sessions.
-    Displays the process name, current line, total line, and the creation timestamp for each active session.
-*/
-void ConsoleManager::listSessions() {
-    std::lock_guard<std::mutex> lock(sessionMutex); // Lock mutex to ensure thread safety
-
-    // If no sessions are active, inform the user
-    if (sessions.empty()) {
-        std::cout << "No active sessions.\n";
-        return;
-    }
-
-    // Display each session's details
-    std::cout << "Active sessions:\n";
-    for (const auto& pair : sessions) {
-        const ScreenSession& session = pair.second;
-        std::cout << "- " << session.processName << " | Current Line: " << session.currentLine
-            << " / " << session.totalLine << " | Created: " << session.timestamp << "\n";
-    }
+ConfigurationManager& ConsoleManager::getConfigurationManager() {
+	return configManager;
 }
 
-/*
-    Terminate a session with the specified name.
-    Marks the session as inactive and removes it from the list of active sessions.
-    Param: name - the name of the session to terminate.
-*/
-void ConsoleManager::terminateSession(const std::string& name) {
-    std::lock_guard<std::mutex> lock(sessionMutex); // Lock mutex to ensure thread safety
+const std::unordered_map<std::string, std::shared_ptr<AConsole>>& ConsoleManager::getConsoles() const {
+	return consoles;
+}
 
-    // Check if the session exists
-    if (sessions.find(name) == sessions.end()) {
-        std::cout << "No session found with name '" << name << "'\n";
-        return;
-    }
+void ConsoleManager::addConsole(std::shared_ptr<AConsole> console) {
+	consoles[console->getName()] = console;
+}
 
-    // Mark the session as inactive and remove it from the sessions map
-    sessions[name].isActive = false;
-    std::cout << "Session '" << name << "' terminated.\n";
-    sessions.erase(name);  // Remove session from the map
+void ConsoleManager::returnToPreviousScreen() {
+	if (previousConsole) {
+		currentConsole = previousConsole;
+		previousConsole = nullptr;
+		system("cls");
+		currentConsole->onExecute();
+	}
+	else {
+		std::cerr << "No previous screen to return to." << std::endl;
+	}
+}
+
+ResourceManager& ConsoleManager::getResourceManager() {
+	return resourceManager;
+}
+
+
+void ConsoleManager::createProcessScreen(const std::string processName) {
+	// Create new process
+	std::shared_ptr<Process> processPointer = resourceManager.createProcess(processName);
+
+	// Create new process screen
+	auto processScreen = std::make_shared<ProcessScreen>(processPointer);
+
+	// Add process screen to console manager
+	addConsole(processScreen);
+
+	// Switch to process screen
+	//switchScreen(processScreen->getName());
+}
+
+
+
+void ConsoleManager::displayStatus() {
+	resourceManager.displayStatus();
+}
+
+bool ConsoleManager::ifProcessExists(std::string name) {
+	bool flag;
+	if (resourceManager.getScheduler()->getProcessByName(name) == nullptr) return false;
+	return true;
+}
+
+bool ConsoleManager::isProcessFinished(std::string name) {
+	if (ifProcessExists(name)) {
+		std::shared_ptr<Process> foundProcess = resourceManager.getScheduler()->getProcessByName(name);
+		return foundProcess->isFinished();
+	}
+
+	return false;
 }
