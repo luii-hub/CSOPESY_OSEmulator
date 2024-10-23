@@ -1,0 +1,88 @@
+﻿  AConsole.cpp
+  BackingStore.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\xutility(403,82): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\xutility(403,82): warning C4244:         with
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\xutility(403,82): warning C4244:         [
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\xutility(403,82): warning C4244:             _Ty=int
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\xutility(403,82): warning C4244:         ]
+  (compiling source file 'BackingStore.cpp')
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\xutility(403,82):
+      the template instantiation context (the oldest one first) is
+          C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\BackingStore.cpp(51,36):
+          see reference to function template instantiation 'std::shared_ptr<Process> std::make_shared<Process,std::string&,int&,float&,float&,int>(std::string &,int &,float &,float &,int &&)' being compiled
+          C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\memory(2906,46):
+          see reference to function template instantiation 'std::_Ref_count_obj2<Process>::_Ref_count_obj2<std::string&,int&,float&,float&,_Ty>(std::string &,int &,float &,float &,_Ty &&)' being compiled
+          with
+          [
+              _Ty=int
+          ]
+          C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\memory(2095,18):
+          see reference to function template instantiation 'void std::_Construct_in_place<_Ty,std::string&,int&,float&,float&,int>(_Ty &,std::string &,int &,float &,float &,int &&) noexcept(false)' being compiled
+          with
+          [
+              _Ty=Process
+          ]
+  
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\xutility(403,82): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'BackingStore.cpp')
+  
+  ConfigurationManager.cpp
+C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\ConfigurationManager.cpp(166,62): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\ConfigurationManager.cpp(166,41): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\ConfigurationManager.cpp(167,58): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\ConfigurationManager.cpp(167,39): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\ConfigurationManager.cpp(169,25): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\ConfigurationManager.cpp(170,25): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\ConfigurationManager.cpp(171,23): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\ConfigurationManager.cpp(172,23): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\ConfigurationManager.cpp(201,13): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\ConfigurationManager.cpp(203,13): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\ConfigurationManager.cpp(219,13): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  ConsoleManager.cpp
+C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\ConsoleManager.cpp(129,7): warning C4101: 'flag': unreferenced local variable
+  CoreWorker.cpp
+  CSOPESY_OSEmulator.cpp
+  FlatMemoryAllocator.cpp
+C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\FlatMemoryAllocator.cpp(32,47): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  MainMenu.cpp
+  Marquee.cpp
+  MemoryManager.cpp
+C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\MemoryManager.cpp(129,56): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+  PagingAllocator.cpp
+C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\PagingAllocator.cpp(11,52): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\PagingAllocator.cpp(12,51): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\PagingAllocator.cpp(100,30): warning C4244: 'initializing': conversion from 'unsigned __int64' to 'float', possible loss of data
+C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\PagingAllocator.cpp(133,46): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\PagingAllocator.cpp(160,51): warning C4267: '+=': conversion from 'size_t' to 'int', possible loss of data
+  Process.cpp
+  ProcessScreen.cpp
+  ResourceManager.cpp
+C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\ResourceManager.cpp(38,106): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\ResourceManager.cpp(38,67): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\ResourceManager.cpp(39,114): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\ResourceManager.cpp(39,73): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\ResourceManager.cpp(129,13): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\ResourceManager.cpp(131,13): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\ResourceManager.cpp(147,13): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\ResourceManager.cpp(308,18): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\ResourceManager.cpp(348,17): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\xutility(403,82): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'ResourceManager.cpp')
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\xutility(403,82):
+      the template instantiation context (the oldest one first) is
+          C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\ResourceManager.cpp(43,25):
+          see reference to function template instantiation 'std::shared_ptr<Process> std::make_shared<Process,std::string&,int&,int&,int&,int&>(std::string &,int &,int &,int &,int &)' being compiled
+          C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\memory(2906,46):
+          see reference to function template instantiation 'std::_Ref_count_obj2<Process>::_Ref_count_obj2<std::string&,int&,int&,int&,int&>(std::string &,int &,int &,int &,int &)' being compiled
+          C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\memory(2095,18):
+          see reference to function template instantiation 'void std::_Construct_in_place<_Ty,std::string&,int&,int&,int&,int&>(_Ty &,std::string &,int &,int &,int &,int &) noexcept(false)' being compiled
+          with
+          [
+              _Ty=Process
+          ]
+  
+  Scheduler.cpp
+  styles.cpp
+  utilities.cpp
+  Generating Code...
+  CSOPESY_OSEmulator.vcxproj -> C:\Users\user\OneDrive - De La Salle University - Manila\Desktop\CSOPESY_OSEmulator-feat-scheduler\CSOPESY_OSEmulator-feat-scheduler\x64\Debug\CSOPESY_OSEmulator.exe
