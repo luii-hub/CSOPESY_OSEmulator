@@ -65,6 +65,7 @@ void MainMenu::handleCommand(string command) {
         if (command == "clear" || command == "cls") 
         {
             system("cls");
+            displayHeader();
 
         } else if (command.substr(0,6) == "screen") 
         {
