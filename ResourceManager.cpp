@@ -179,8 +179,6 @@ void ResourceManager::stopSchedulerTest() {
 	if (testThread.joinable()) {
 		testThread.join();  // Ensure the thread is properly joined
 	}
-
-	testPrint();
 }
 
 void ResourceManager::schedulerTestLoop() {
@@ -393,44 +391,45 @@ void ResourceManager::saveReport() {
 	std::cout << "Report saved at csopesy-log.txt!" << std::endl;
 }
 
-void ResourceManager::testPrint()
-{
-	std::lock_guard<std::mutex> lock(processMutex);
-
-	const std::vector<std::shared_ptr<Process>>& processes = scheduler.getProcesses();
-	for (const auto& process : processes)
-	{
-		// store process name in variable
-		std::string processName = process->getName();
-
-		std::ofstream file(processName + ".txt");
-		if (!file) {
-			std::cerr << "Error opening file." << std::endl;
-			return;
-		}
-
-		file << "Process name: " << processName << "\n";
-		file << "Logs:\n\n";
-
-		if (process->isFinished())
-		{
-			// print hello world 100 times
-			for (int i = 0; i < 100; i++)
-			{
-				// Get current time
-				auto now = std::chrono::system_clock::now();
-				std::time_t now_c = std::chrono::system_clock::to_time_t(now);
-				std::tm localTime;
-				localtime_s(&localTime, &now_c);
-
-				file << "(" << std::put_time(&localTime, "%m/%d/%Y %I:%M:%S %p") << ") "
-					<< "Core:" << process->getCore()
-					<< " \"Hello World from " << processName << "!\"\n";
-
-			}
-		}
-	}
-}
+// TODO: Remove this function if no longer needed in future activities
+//void ResourceManager::testPrint()
+//{
+//	std::lock_guard<std::mutex> lock(processMutex);
+//
+//	const std::vector<std::shared_ptr<Process>>& processes = scheduler.getProcesses();
+//	for (const auto& process : processes)
+//	{
+//		// store process name in variable
+//		std::string processName = process->getName();
+//
+//		std::ofstream file(processName + ".txt");
+//		if (!file) {
+//			std::cerr << "Error opening file." << std::endl;
+//			return;
+//		}
+//
+//		file << "Process name: " << processName << "\n";
+//		file << "Logs:\n\n";
+//
+//		if (process->isFinished())
+//		{
+//			// print hello world 100 times
+//			for (int i = 0; i < 100; i++)
+//			{
+//				// Get current time
+//				auto now = std::chrono::system_clock::now();
+//				std::time_t now_c = std::chrono::system_clock::to_time_t(now);
+//				std::tm localTime;
+//				localtime_s(&localTime, &now_c);
+//
+//				file << "(" << std::put_time(&localTime, "%m/%d/%Y %I:%M:%S %p") << ") "
+//					<< "Core:" << process->getCore()
+//					<< " \"Hello World from " << processName << "!\"\n";
+//
+//			}
+//		}
+//	}
+//}
 
 void ResourceManager::displayAllProcesses() {
 	const std::vector<std::shared_ptr<Process>>& processes = scheduler.getProcesses();

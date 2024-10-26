@@ -45,8 +45,8 @@ public:
     void saveReport();
     void displayAllProcesses();
 
-    // test print
-    void testPrint();
+	// TODO: test print (FOR REMOVAL)
+    //void testPrint();
 private:
     ConfigurationManager* configManager;
     MemoryManager memoryManager;
