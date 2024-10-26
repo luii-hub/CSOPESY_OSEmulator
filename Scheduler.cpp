@@ -86,7 +86,9 @@ void Scheduler::schedulerLoop() {
         if (configManager->getSchedulerAlgorithm() == "fcfs") {
             scheduleFCFS();
         }
-        // TODO: add condition here for RR
+		else if (configManager->getSchedulerAlgorithm() == "rr") {
+			scheduleRR();
+		}
 
         std::this_thread::sleep_for(std::chrono::duration<float>(configManager->getDelayPerExec()));
     }
@@ -139,6 +141,38 @@ void Scheduler::scheduleFCFS() {
 }
 
 // TODO: implement RR scheduling
+void Scheduler::scheduleRR() {
+    while (running) {
+        std::lock_guard<std::mutex> lock(queueMutex);
+        if (!readyQueue.empty()) {
+            auto process = readyQueue.front();
+            readyQueue.pop();
+
+            auto coreID = getAvailableCoreWorkerID();
+
+            if (coreID > 0) {
+                process->setCore(coreID);
+                cores[coreID - 1]->setProcess(process);
+
+                // Use a lambda function to handle requeueing the process after execution
+                cores[coreID - 1]->setProcessCompletionCallback([this](std::shared_ptr<Process> completedProcess) {
+                    if (!completedProcess->isFinished()) {
+                        std::lock_guard<std::mutex> queueLock(this->queueMutex);
+                        this->readyQueue.push(completedProcess);
+                    }
+                    else {
+                        std::lock_guard<std::mutex> processLock(this->processMutex);
+                        this->finishedProcesses.push_back(completedProcess);
+                    }
+                    });
+            }
+            else {
+                // No available core, put the process back at the front of the queue
+                readyQueue.push(process);
+            }
+        }
+    }
+}
 
 const std::vector<std::unique_ptr<CoreWorker>>& Scheduler::getCoreWorkers() const {
     return cores;

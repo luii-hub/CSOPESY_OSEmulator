@@ -25,10 +25,14 @@ public:
     bool initialize(ConfigurationManager* newConfigManager); // Initialize the scheduler with a configuration manager
     void run(); // Start the scheduler
     void stop();
-    const std::vector<std::unique_ptr<CoreWorker>>& getCores() const; 
+    const std::vector<std::unique_ptr<CoreWorker>>& getCores() const;
 
     void displayStatus();
-    void saveReport(); 
+    void saveReport();
+
+    int getCyclesInCore() const { return cyclesInCore; }
+    void resetCyclesInCore() { cyclesInCore = 0; }
+    void incrementCyclesInCore() { ++cyclesInCore; }
 
     // Access to core workers and prcesses
     const std::vector<std::unique_ptr<CoreWorker>>& getCoreWorkers() const;
@@ -49,7 +53,9 @@ private:
     int getAvailableCoreWorkerID();
 
     void scheduleFCFS();
-    void scheduleRR(); // TODO: to be implemented
+    void scheduleRR();
+
+    int cyclesInCore = 0;
 
     bool isTestRunning;
     std::thread     schedulerThread;

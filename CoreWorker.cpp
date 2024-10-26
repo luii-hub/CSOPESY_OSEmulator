@@ -31,8 +31,6 @@ void CoreWorker::runProcess() {
             totalActiveTicks++;
             currentProcess->execute();
             std::this_thread::sleep_for(std::chrono::duration<float>(delayPerExec));
-
-
         }
 
         // Process is finished, notify Scheduler
@@ -42,25 +40,25 @@ void CoreWorker::runProcess() {
     }
 
     // For RR
-    //else {
-    //    for (int i = 0; i < quantumSlice; i++) {
-    //        if (currentProcess->isFinished()) {
-    //            finishProcess();
-    //            return;
-    //        }
-    //        currentProcess->execute();
-    //        std::this_thread::sleep_for(std::chrono::duration<float>(delayPerExec));
-    //    }
-    //    totalActiveTicks++;
-    //    // Process is not finished, notify Scheduler
-    //    if (processCompletionCallback) {
-    //        processCompletionCallback(currentProcess);
-    //    }
+    else {
+        for (int i = 0; i < quantumSlice; i++) {
+            if (currentProcess->isFinished()) {
+                finishProcess();
+                return;
+            }
+            currentProcess->execute();
+            std::this_thread::sleep_for(std::chrono::duration<float>(delayPerExec));
+        }
+        totalActiveTicks++;
+        // Process is not finished, notify Scheduler
+        if (processCompletionCallback) {
+            processCompletionCallback(currentProcess);
+        }
 
-    //    // Reset the current process to ensure it gets requeued
-    //    currentProcess.reset();
-    //    processAssigned = false;
-    //}
+        // Reset the current process to ensure it gets requeued
+        currentProcess.reset();
+        processAssigned = false;
+    }
 }
 
 
