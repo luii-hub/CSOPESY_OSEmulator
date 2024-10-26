@@ -1,6 +1,5 @@
 #include "ConsoleManager.h"
 #include "MainMenu.h"
-#include "Marquee.h"
 #include "ConfigurationManager.h"
 #include "Scheduler.h"
 #include "Process.h"
@@ -11,9 +10,6 @@
 ConsoleManager::ConsoleManager() {
 	auto MAIN_MENU = std::make_shared<MainMenu>();
 	consoles[MAIN_MENU->getName()] = MAIN_MENU;
-
-	auto MARQUEE_SCREEN = std::make_shared<Marquee>();
-	consoles[MARQUEE_SCREEN->getName()] = MARQUEE_SCREEN;
 
 	currentConsole = MAIN_MENU;
 }
