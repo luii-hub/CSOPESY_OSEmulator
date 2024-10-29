@@ -112,7 +112,7 @@ void ConsoleManager::createProcessScreen(const std::string processName) {
 	addConsole(processScreen);
 
 	// Switch to process screen
-	//switchScreen(processScreen->getName());
+	switchScreen(processScreen->getName());
 }
 
 
