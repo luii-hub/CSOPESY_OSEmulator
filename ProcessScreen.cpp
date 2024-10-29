@@ -15,22 +15,6 @@ void ProcessScreen::onExecute() {
 }
 
 void ProcessScreen::display() {
-	displayHeader();
-}
-
-void ProcessScreen::process() {
-    string command;
-    bool running = true;
-
-    while (running) {
-        std::cout << "> ";
-        getline(cin, command);
-        running = handleCommand(command);
-        std::cout << endl;
-    }
-}
-
-void ProcessScreen::displayHeader() {
     std::cout << "--------------------------" << endl;
     // Displays process name and ID
     std::cout << "Process: " << thisProcess->getName() << endl;
@@ -45,6 +29,18 @@ void ProcessScreen::displayHeader() {
     }
     else {
         std::cout << "Finished!" << endl;
+    }
+}
+
+void ProcessScreen::process() {
+    string command;
+    bool running = true;
+
+    while (running) {
+        std::cout << "> ";
+        getline(cin, command);
+        running = handleCommand(command);
+        std::cout << endl;
     }
 }
 

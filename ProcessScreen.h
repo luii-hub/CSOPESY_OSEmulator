@@ -13,7 +13,6 @@ public:
 	void process() override; // Handle commands
 
 private:
-	void displayHeader();
 	bool handleCommand(string command);
 
 	std::shared_ptr<Process> thisProcess;
