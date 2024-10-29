@@ -1,0 +1,13 @@
+CPU utilization: 0%
+Cores used: 0
+Cores available: 4
+Memory Usage: 48/64
+Memory-Util: 75%
+--------------------------------------------
+Running processes:
+p1                  10/29/2024 08:44:13PM         Core:                  0 / 50
+p2                  10/29/2024 08:44:16PM         Core:                  0 / 50
+p3                  10/29/2024 08:44:17PM         Core:                  0 / 50
+
+Finished processes:
+--------------------------------------------
