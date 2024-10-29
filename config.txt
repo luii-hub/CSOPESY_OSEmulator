@@ -3,9 +3,9 @@ scheduler "fcfs"
 quantum-cycles 0
 preemptive 1
 batch-process-freq 0.1
-min-ins 50
-max-ins 50
-delay-per-exec 0.1
+min-ins 1000
+max-ins 1000
+delay-per-exec 3
 max-overall-mem 64
 min-mem-per-proc 16
 max-mem-per-proc 16
