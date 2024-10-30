@@ -7,12 +7,12 @@
 
 #include <random>                 // Include random for random functionalities if needed
 
-// Constructor for ConsoleManager
-ConsoleManager::ConsoleManager() {
-	auto MAIN_MENU = std::make_shared<MainMenu>();          // Create a shared pointer to MainMenu object
-	consoles[MAIN_MENU->getName()] = MAIN_MENU;             // Add MAIN_MENU to the consoles map with its name as the key
+ConsoleManager::ConsoleManager()
+	: resourceManager(*this) {  // Initialize resourceManager with a reference to ConsoleManager
 
-	currentConsole = MAIN_MENU;                             // Set currentConsole to MAIN_MENU, the initial console
+	auto MAIN_MENU = std::make_shared<MainMenu>();
+	consoles[MAIN_MENU->getName()] = MAIN_MENU;
+	currentConsole = MAIN_MENU;
 }
 
 // Destructor for ConsoleManager (empty because shared_ptr handles cleanup)
@@ -109,6 +109,7 @@ ResourceManager& ConsoleManager::getResourceManager() {
 
 // Create a new process screen and add it to the console manager
 void ConsoleManager::createProcessScreen(const std::string processName) {
+	
 	std::shared_ptr<Process> processPointer = resourceManager.createProcess(processName); // Create a new process
 
 	auto processScreen = std::make_shared<ProcessScreen>(processPointer); // Create a new ProcessScreen for the process
