@@ -74,45 +74,64 @@ void MainMenu::handleCommand(string command) {
             }
             else if (command.substr(0, 9) == "screen -s")
             {
-                string processName = command.substr(10);
-                trim(processName);
-                if (processName.empty()) { // if the process name is empty
-                    cout << "Command not recognized! Please provide a process name." << endl;
-            }
+                if (command == "screen -s") { // if the command is empty
+                	cout << "Usage: screen -s [Process Name]" << endl;
+                }
+                else {
 
-                // if the process name is not empty
-                else 
-                { 
-                    // if the process does not exist, create process
-                    if (!consoleManager.getResourceManager().processExists(processName)) {
-                        consoleManager.createProcessScreen(processName);
+                    string processName = command.substr(10);
+                    trim(processName);
+                    if (processName.empty()) { // if the process name is empty
+                        cout << "Please provide a process name." << endl;
                     }
-                    else { // if the process already exists
-                        cout << "Process already exists or has existed. Please provide a different name." << endl;
+
+                    // if the process name is not empty
+                    else
+                    {
+                        // if the process does not exist, create process
+                        if (!consoleManager.getResourceManager().processExists(processName)) {
+                            consoleManager.createProcessScreen(processName);
+                        }
+                        else { // if the process already exists
+                            cout << "Process already exists or has existed. Please provide a different name." << endl;
+                        }
                     }
-                   
+
                 }
             }
 
             else if (command.substr(0,9) == "screen -r")
             {
-                string processName = command.substr(10);
-                trim(processName);
-
-                // if the process name is empty
-                if (processName.empty()) 
-                { 
-                    cout << "Command not recognized! Please provide a process name." << endl;
+                if (command == "screen -r") { // if the command is empty
+                    cout << "Usage: screen -r [Process Name]" << endl;
                 }
-
                 else {
-                    if (consoleManager.isProcessFinished(processName)) { // if the process is finished, there will be no screen
-                        cout << "Process " << processName << " not found." << endl;
+
+                    string processName = command.substr(10);
+                    trim(processName);
+
+                    // if the process name is empty
+                    if (processName.empty())
+                    {
+                        cout << "Please provide a process name." << endl;
                     }
-                    else { // if the process is not finished, switch to the screen
-                        consoleManager.switchScreen("PROCESS_SCREEN_" + processName);
+
+                    else {
+                        if (consoleManager.isProcessFinished(processName)) { // if the process is finished, there will be no screen
+                            cout << "Process " << processName << " not found." << endl;
+                        }
+                        else { // if the process is not finished, switch to the screen
+                            consoleManager.switchScreen("PROCESS_SCREEN_" + processName);
+                        }
                     }
                 }
+            }
+
+            if (command == "screen") {
+                cout << "Usage:" << endl;
+                cout << "screen - ls " << endl;
+                cout << "screen - s[Process Name] " << endl;
+                cout << "screen - r[Process Name]" << endl;
             }
 
         } else if (command.substr(0, 9) == "scheduler") {
