@@ -18,17 +18,16 @@ Scheduler::~Scheduler() {
     }
 }
 
-void Scheduler::addProcess(const Process& process) {
+void Scheduler::addProcess(const std::shared_ptr<Process>& process) {
     std::lock_guard<std::mutex> lock(processMutex);
-    auto newProcess = std::make_shared<Process>(process);
-    processes.push_back(newProcess);
+    processes.push_back(process);
 
     std::lock_guard<std::mutex> queueLock(queueMutex);
-    readyQueue.push(newProcess);
+    readyQueue.push(process);
 }
 
 
-std::shared_ptr<Process> Scheduler::getProcessByName(const std::string name) {
+std::shared_ptr<Process> Scheduler::getProcessByName(const std::string& name) {
     std::lock_guard<std::mutex> lock(processMutex);
     for (auto& process : processes) {
         if (process->getName() == name) {
@@ -155,7 +154,7 @@ void Scheduler::scheduleRR() {
                 cores[coreID - 1]->setProcess(process);
 
                 // Use a lambda function to handle requeueing the process after execution
-                cores[coreID - 1]->setProcessCompletionCallback([this](std::shared_ptr<Process> completedProcess) {
+                cores[coreID - 1]->setProcessCompletionCallback([this](const std::shared_ptr<Process>& completedProcess) {
                     if (!completedProcess->isFinished()) {
                         std::lock_guard<std::mutex> queueLock(this->queueMutex);
                         this->readyQueue.push(completedProcess);

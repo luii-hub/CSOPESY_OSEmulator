@@ -114,8 +114,8 @@ void ConsoleManager::createProcessScreen(const std::string processName) {
 	auto processScreen = std::make_shared<ProcessScreen>(processPointer); // Create a new ProcessScreen for the process
 
 	addConsole(processScreen);                               // Add process screen to consoles map
-
-	// Note: `switchScreen(processScreen->getName());` is commented out, so it does not auto-switch
+	// Switch to process screen
+	switchScreen(processScreen->getName());
 }
 
 // Display the status of resources (delegates to ResourceManager)
