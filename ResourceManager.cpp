@@ -88,7 +88,7 @@ void ResourceManager::allocateAndScheduleProcesses() {
 		// Try to allocate memory for the process
 		if (memoryManager.allocate(*process)) {
 			// Add process to the scheduler if memory allocation is successful
-			scheduler.addProcess(*process);
+			scheduler.addProcess(process);
 		}
 		else {
 			std::lock_guard<std::mutex> lock(processMutex);

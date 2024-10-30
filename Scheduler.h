@@ -18,8 +18,8 @@ public:
     Scheduler();
     ~Scheduler();
 
-    void addProcess(const Process& process); // Add a process to the ready queue
-    std::shared_ptr<Process> getProcessByName(const std::string name);
+    void addProcess(const std::shared_ptr<Process>& process); // Add a process to the ready queue
+    std::shared_ptr<Process> getProcessByName(const std::string& name);
     std::shared_ptr<Process> getProcessByID(int pid);
 
     bool initialize(ConfigurationManager* newConfigManager); // Initialize the scheduler with a configuration manager
