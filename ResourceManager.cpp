@@ -1,4 +1,5 @@
 #include "ResourceManager.h"
+#include "ConsoleManager.h"
 
 #include <cstdlib>
 #include <ctime>
@@ -7,9 +8,11 @@
 #include <thread>
 #include <iomanip>
 
-ResourceManager::ResourceManager() : processCounter(0) {
-	srand(static_cast<unsigned int>(time(0))); // Seed the random number generator
+ResourceManager::ResourceManager(ConsoleManager& consoleManager)
+	: consoleManager(consoleManager), processCounter(0) {
+	srand(static_cast<unsigned int>(time(0)));
 }
+
 
 ResourceManager::~ResourceManager() {
 	stopAllocationThread();
@@ -182,10 +185,17 @@ void ResourceManager::stopSchedulerTest() {
 }
 
 void ResourceManager::schedulerTestLoop() {
+
 	while (schedulerTest) {
 		schedulerCounter++;
 		int processID = schedulerCounter;
-		createProcess("process_test" + std::to_string(processID));
+		std:: string processName = "process_test" + std::to_string(processID);
+		std::shared_ptr<Process> processPointer = createProcess(processName);
+		auto processScreen = std::make_shared<ProcessScreen>(processPointer);
+
+		// Use consoleManager to create a ProcessScreen
+		consoleManager.addConsole(processScreen);
+
 		std::this_thread::sleep_for(std::chrono::duration<double>(configManager->getBatchProcessFrequency()));
 	}
 }

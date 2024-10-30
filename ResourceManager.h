@@ -12,10 +12,13 @@
 #include <condition_variable>
 #include <fstream>
 
+class ConsoleManager;
+
+
 class ResourceManager
 {
 public:
-    ResourceManager();
+    ResourceManager(ConsoleManager& consoleManager); // Accept ConsoleManager by reference
     ~ResourceManager();
 
     bool initialize(ConfigurationManager* newConfigManager); // Initialize the scheduler and the memory manager
@@ -48,6 +51,8 @@ public:
 	// TODO: test print (FOR REMOVAL)
     //void testPrint();
 private:
+    ConsoleManager& consoleManager; // Reference to ConsoleManager
+
     ConfigurationManager* configManager;
     MemoryManager memoryManager;
     Scheduler scheduler;
