@@ -21,7 +21,7 @@ This project simulates an Operating System Emulator (OSEmulator) designed to man
    
 3. **Build and Run**
    -   Navigate to the Solution Explorer thens select the file ```CSOPESY_OSEmulator.cpp```
-   -   ```CSOPESY_OSEmulator.cpp``` is the $${\color{red}entry  class  file}$$ where the main function is located
+   -   ```CSOPESY_OSEmulator.cpp``` is the $${\color{red}entry}$$ $${\color{red}class}$$ $${\color{red}file}$$ where the main function is located
    -   Build and Run the project.
 
 
