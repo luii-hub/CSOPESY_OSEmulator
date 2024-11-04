@@ -1,17 +1,29 @@
 # **OSEmulator Project**
 
-## **Project Overview**
-
 This project simulates an Operating System Emulator (OSEmulator) designed to manage multiple processes or screen sessions through a command-line interface (CLI). Users can interact with the system by entering commands to initialize the system, create and manage screen sessions, schedule tasks, and run utilities.
 
----
-
-## **Project Members**
+## **Members**
 
 - **Luis Miguel Rana**
 - **Mark Daniel Guttierrez**
 - **Raico Madrinan**
 - **Eun Ji Ha**
+
+## **How to run** 
+1. **Install Required Software**:
+   - Ensure you have the following software installed:
+     - **Visual Studio 2022** with the **Desktop development with C++** workload.
+     - **Git** (for cloning the repository)
+      
+2. **Clone the Repository**:
+   - Open Visual Studio 2022, select "Clone a repository"
+   - In the GitHub Repo, copy the repository link then paste the link inside Visual Studio 2022
+   - 
+3. **Build and Run**
+   -   Navigate to the Solution Explorer thens select the file ```bash CSOPESY_OSEmulator.cpp```
+   -   ```bash CSOPESY_OSEmulator.cpp``` is the **entry class file**, where the main fucntion is located
+   -   Build and Run the project.
+
 
 ---
 
@@ -20,15 +32,16 @@ This project simulates an Operating System Emulator (OSEmulator) designed to man
 ### **Source Files**
 | File              | Description                                                                                                                                                          |
 |-------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **OSEmulator.cpp**| Contains the `main` function. This is where the program begins execution. It initializes the CLI, greets the user, and continuously waits for user input (commands).   |
-| **process.cpp**   | Handles system initialization, screen management commands, and scheduler utilities. This file includes logic for running and managing system processes.                |
-| **utilities.cpp** | Contains utility functions such as greeting the user, printing the application header, handling command execution, and testing console text styling.                    |
-| **ConsoleManager.cpp**| Manages the life cycle of screen sessions. It allows for starting, resuming, listing, and terminating processes in background threads to simulate real execution.  |
+| **CSOPESY_OSEmulator**| Contains the `main` function. This is where the program begins execution where it instantiates the ConsoleManager   |
+| **ConsoleManager**   | This class manages the system configuration, including reading from a configuration file (config.txt) and providing access to configuration parameters.                |
+| **ConfigurationManager** | This class manages the system configuration, including reading from a configuration file (config.txt) and providing access to configuration parameters.                   |
+| **ResourceManager**| This class manages the creation, scheduling, memory allocation, and resource monitoring for processes. It interacts with the ConsoleManager, Scheduler, and MemoryManager to handle resource distribution and utilization within the system.  |
+| **AConsole**| This abstract base class defines a generic console interface with methods for execution, display, and processing. It is designed to be inherited by specific console implementations, like MainMenu, processScreens.   |
+| **MainMenu**   | This class represents the main menu screen, providing the user with a command-line interface to interact with the console manager, access different screens, and manage processes.                |
+| **ProcessScreen** | This class represents the console screen for a specific process, allowing users to view process details and interact with the process through commands.                   |
+| **Process** | This class represents a single process, tracking its execution state, memory usage, and core assignment. It provides methods for executing instructions and checking the process's status.  |
+| **CoreWorker**| This class represents a single CPU core responsible for executing processes. It manages process assignments, tracks CPU usage, and interacts with the scheduler to reassign or complete processes   |
+| **Scheduler**   | This class manages CPU scheduling, assigning processes to cores based on the scheduling algorithm specified in the configuration. It supports both First-Come, First-Served (FCFS) and Round-Robin (RR) scheduling.                |
+| **Styles** | This class simply contains styling and formatting functions used for the UI                   |
+| **ResourceManager**| This class manages the creation, scheduling, memory allocation, and resource monitoring for processes. It interacts with the ConsoleManager, Scheduler, and MemoryManager to handle resource distribution and utilization within the system.  |
 
-### **Header Files**
-| Header File           | Description                                                                                                                                                       |
-|-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **process.h**         | Declares function prototypes for system initialization, screen management, and scheduler-related tasks. This includes initializing the system and handling screens. |
-| **utilities.h**       | Declares utility function prototypes that support the application, such as printing headers, greeting users, and handling command execution.                        |
-| **ConsoleManager.h**  | Declares the `ConsoleManager` class, which handles the creation, resumption, and listing of screen sessions. It manages all screen sessions using multithreading.   |
-| **styles.h**          | Provides helper functions to style and format console output. This includes colorizing text, adding bold, underline, and other stylistic effects to console output.  |
