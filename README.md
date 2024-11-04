@@ -43,5 +43,3 @@ This project simulates an Operating System Emulator (OSEmulator) designed to man
 | **CoreWorker**| This class represents a single CPU core responsible for executing processes. It manages process assignments, tracks CPU usage, and interacts with the scheduler to reassign or complete processes   |
 | **Scheduler**   | This class manages CPU scheduling, assigning processes to cores based on the scheduling algorithm specified in the configuration. It supports both First-Come, First-Served (FCFS) and Round-Robin (RR) scheduling.                |
 | **Styles** | This class simply contains styling and formatting functions used for the UI                   |
-| **ResourceManager**| This class manages the creation, scheduling, memory allocation, and resource monitoring for processes. It interacts with the ConsoleManager, Scheduler, and MemoryManager to handle resource distribution and utilization within the system.  |
-
