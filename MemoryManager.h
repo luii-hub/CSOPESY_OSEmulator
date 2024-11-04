@@ -6,8 +6,6 @@
 
 #include "ConfigurationManager.h"
 #include "Process.h"
-#include "FlatMemoryAllocator.h"
-#include "PagingAllocator.h"
 #include "Scheduler.h"
 #include "BackingStore.h"
 
@@ -16,8 +14,6 @@ class MemoryManager
 public:
     MemoryManager();
     ~MemoryManager();
-    FlatMemoryAllocator flatAllocator;
-    PagingAllocator pagingAllocator;
 
     bool initialize(ConfigurationManager* configManager, Scheduler* scheduler);
     bool allocate(Process process);
@@ -43,6 +39,5 @@ private:
     std::thread memoryThread;
     std::atomic<bool> running;
 
-    std::unordered_set<int> getRunningProcessIDs() const; // get running process IDs
 
 };
