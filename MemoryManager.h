@@ -8,12 +8,14 @@
 #include "Process.h"
 #include "Scheduler.h"
 #include "BackingStore.h"
+#include "FlatAllocator.h"
 
 class MemoryManager
 {
 public:
     MemoryManager();
     ~MemoryManager();
+	FlatAllocator flatAllocator;
 
     bool initialize(ConfigurationManager* configManager, Scheduler* scheduler);
     bool allocate(Process process);
@@ -39,5 +41,5 @@ private:
     std::thread memoryThread;
     std::atomic<bool> running;
 
-
+    std::unordered_set<int> getRunningProcessIDs() const; // get running process IDs
 };
