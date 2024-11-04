@@ -20,8 +20,8 @@ This project simulates an Operating System Emulator (OSEmulator) designed to man
    - In the GitHub Repo, copy the repository link then paste the link inside Visual Studio 2022
    
 3. **Build and Run**
-   -   Navigate to the Solution Explorer thens select the file ``` CSOPESY_OSEmulator.cpp```
-   -   ``` CSOPESY_OSEmulator.cpp``` is the **entry class file**, where the main fucntion is located
+   -   Navigate to the Solution Explorer thens select the file ```CSOPESY_OSEmulator.cpp```
+   -   ```CSOPESY_OSEmulator.cpp``` is the **entry class file**, where the main function is located
    -   Build and Run the project.
 
 
