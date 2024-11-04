@@ -18,7 +18,7 @@ This project simulates an Operating System Emulator (OSEmulator) designed to man
 2. **Clone the Repository**:
    - Open Visual Studio 2022, select "Clone a repository"
    - In the GitHub Repo, copy the repository link then paste the link inside Visual Studio 2022
-   - 
+   
 3. **Build and Run**
    -   Navigate to the Solution Explorer thens select the file ```bash CSOPESY_OSEmulator.cpp```
    -   ```bash CSOPESY_OSEmulator.cpp``` is the **entry class file**, where the main fucntion is located
