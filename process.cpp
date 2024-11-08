@@ -5,27 +5,22 @@
 
 extern ConsoleManager consoleManager;	
 
-Process::Process() : id(0), totalInstructions(0), memorySize(0), pageSize(0), startAddress(0), endAddress(0) {}
+Process::Process() : id(0), totalInstructions(0), memorySize(0), pageSize(0) {
+	// Initialize other members if needed
+}
 
 Process::Process(std::string name, int id, int totalInstructions, float memorySize, float pageSize)
-    : processName(name), 
-      id(id), 
-      currentInstruction(0), 
-      totalInstructions(totalInstructions), 
-      core(-1), 
-      finished(false), 
-      creationTime(std::chrono::system_clock::now()),
-      memorySize(memorySize),
-      pageSize(pageSize),
-      startAddress(0),
-      endAddress(0)
-{}
+	:	processName(name), 
+		id(id), 
+		currentInstruction(0), 
+		totalInstructions(totalInstructions), 
+		core(-1), 
+		finished(false), 
+		creationTime(std::chrono::system_clock::now()),
+		memorySize(memorySize),
+		pageSize(pageSize)
 
-// Method to set memory addresses, for later use in Scheduler
-void Process::setMemoryAddresses(int start, int end) {
-    startAddress = start;
-    endAddress = end;
-}
+{}
 
 std::string Process::getName() const {
 	return processName;
