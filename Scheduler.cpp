@@ -7,7 +7,6 @@
 #include <ctime>
 
 
-
 Scheduler::Scheduler() : running(false) {}
 
 Scheduler::~Scheduler() {
