@@ -4,6 +4,8 @@
 #include <sstream>
 #include <thread>
 #include <iomanip>
+#include <ctime>
+
 
 
 Scheduler::Scheduler() : running(false) {}
@@ -58,6 +60,60 @@ bool Scheduler::initialize(ConfigurationManager* newConfigManager) {
     catch (const std::exception& e) {
         std::cerr << "Error initializing scheduler: " << e.what() << std::endl;
         return false;
+    }
+}
+
+void Scheduler::logMemoryState(int quantumCycle) {
+    // Create a filename with the quantum cycle number
+    std::ostringstream filename;
+    filename << "memory_stamp_" << std::setw(3) << std::setfill('0') << quantumCycle << ".txt";
+
+    std::ofstream file(filename.str());
+    if (!file.is_open()) {
+        std::cerr << "Failed to open file: " << filename.str() << std::endl;
+        return;
+    }
+
+    // Get current timestamp
+    auto now = std::chrono::system_clock::now();
+    auto in_time_t = std::chrono::system_clock::to_time_t(now);
+    struct tm buf;
+    localtime_s(&buf, &in_time_t);
+
+    char timestamp[20];
+    strftime(timestamp, sizeof(timestamp), "%m/%d/%Y %I:%M:%S%p", &buf);
+
+    // Simulate fragmentation (as a constant example value)
+    int fragmentation = 8192;  // Example external fragmentation amount in KB
+
+    // Write header information to file
+    file << "Timestamp: (" << timestamp << ")\n";
+    file << "Number of processes in memory: " << processes.size() << "\n";
+    file << "Total external fragmentation in KB: " << fragmentation << "\n\n";
+
+    // ASCII memory layout
+    int totalMemory = 16384;  // Example total memory size in KB
+    file << "----end----- = " << totalMemory << "\n";
+
+    // Print each process's start and end addresses
+    for (const auto& process : processes) {
+        file << std::setw(5) << process->getStartAddress() << "     " << process->getName() << "\n";
+    }
+
+    // Free memory representation
+    file << "----start----- = 0\n";
+
+    file.close();
+}
+
+// Function to assign simulated memory addresses
+void Scheduler::assignMemoryAddresses() {
+    int startAddress = 16384;  // Starting from a hypothetical total memory size
+    for (auto& process : processes) {
+        int processMemory = 4096;  // Example fixed memory size per process
+        int endAddress = startAddress;
+        startAddress -= processMemory;
+        process->setMemoryAddresses(startAddress, endAddress);
     }
 }
 
@@ -139,8 +195,11 @@ void Scheduler::scheduleFCFS() {
     }
 }
 
-// TODO: implement RR scheduling
+// Integrate logMemoryState into scheduleRR (Round-Robin scheduling)
 void Scheduler::scheduleRR() {
+    int quantumCycle = 0;
+    assignMemoryAddresses();  // Call this once to set memory addresses initially
+
     while (running) {
         std::lock_guard<std::mutex> lock(queueMutex);
         if (!readyQueue.empty()) {
@@ -153,6 +212,10 @@ void Scheduler::scheduleRR() {
                 process->setCore(coreID);
                 cores[coreID - 1]->setProcess(process);
 
+                // Log memory state every quantum cycle
+                logMemoryState(quantumCycle);
+                quantumCycle++;
+
                 // Use a lambda function to handle requeueing the process after execution
                 cores[coreID - 1]->setProcessCompletionCallback([this](const std::shared_ptr<Process>& completedProcess) {
                     if (!completedProcess->isFinished()) {
@@ -163,16 +226,17 @@ void Scheduler::scheduleRR() {
                         std::lock_guard<std::mutex> processLock(this->processMutex);
                         this->finishedProcesses.push_back(completedProcess);
                     }
-                    });
+                });
             }
             else {
                 // No available core, put the process back at the front of the queue
                 readyQueue.push(process);
             }
         }
+
+        std::this_thread::sleep_for(std::chrono::duration<float>(configManager->getQuantumTime()));
     }
 }
-
 const std::vector<std::unique_ptr<CoreWorker>>& Scheduler::getCoreWorkers() const {
     return cores;
 }
