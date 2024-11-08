@@ -1,4 +1,6 @@
-// Process.h
+#pragma once
+#include <chrono>
+#include <string>
 
 class Process {
 private:
