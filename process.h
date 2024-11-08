@@ -2,38 +2,47 @@
 #include <chrono>
 #include <string>
 
-class Process
-{
-public:
-	Process();
-	Process(std::string name, int id, int totalInstructions, float memorySize, float pageSize);
+// Process.h
 
-	std::string getName() const;
-	int getID() const;
-	int getCurrentInstruction() const;
-	int getTotalInstructions() const;
-	int getRemainingInstructions() const;
-	int getCore();
-	void setCore(int coreID);
-	bool isFinished() const;
-	std::string getCreationTime() const;
-	float getMemorySize() const;
-	float getPageSize() const;
-
-	void execute(); // Executes one instruction
-
+class Process {
 private:
-	std::string processName;
-	int id;
-	int core;
-	std::string status;
-	std::chrono::system_clock::time_point creationTime;
+    int id;
+    std::string processName;
+    int currentInstruction;
+    int totalInstructions;
+    int core;
+    bool finished;
+    float memorySize;
+    float pageSize;
+    int startAddress;   // New member for start address
+    int endAddress;     // New member for end address
+    std::chrono::time_point<std::chrono::system_clock> creationTime;
 
-	bool finished;
-	int currentInstruction;
-	int totalInstructions;
-	
-	float memorySize;
-	float pageSize;
+public:
+    Process();
+    Process(std::string name, int id, int totalInstructions, float memorySize, float pageSize);
+
+    std::string getName() const;
+    int getID() const;
+    int getCurrentInstruction() const;
+    int getTotalInstructions() const;
+    int getRemainingInstructions() const;
+    int getCore();
+    void setCore(int coreID);
+    bool isFinished() const;
+    std::string getCreationTime() const;
+    float getMemorySize() const;
+    float getPageSize() const;
+    void execute();
+
+    // New getter methods for memory addresses
+    int getStartAddress() const { return startAddress; }
+    int getEndAddress() const { return endAddress; }
+    
+    // New method to set memory addresses
+    void setMemoryAddresses(int start, int end) {
+        startAddress = start;
+        endAddress = end;
+    }
 };
 
