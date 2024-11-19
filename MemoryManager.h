@@ -9,13 +9,15 @@
 #include "Scheduler.h"
 #include "BackingStore.h"
 #include "FlatAllocator.h"
+#include "PagingAllocator.h"
 
 class MemoryManager
 {
 public:
     MemoryManager();
     ~MemoryManager();
-	FlatAllocator flatAllocator;
+    FlatAllocator flatAllocator;
+    PagingAllocator pagingAllocator;
 
     bool initialize(ConfigurationManager* configManager, Scheduler* scheduler);
     bool allocate(Process process);
@@ -35,11 +37,12 @@ private:
     ConfigurationManager* configManager;
     Scheduler* scheduler;
     BackingStore backingStore;
-    
+
     std::string allocationType;
 
     std::thread memoryThread;
     std::atomic<bool> running;
 
     std::unordered_set<int> getRunningProcessIDs() const; // get running process IDs
+
 };

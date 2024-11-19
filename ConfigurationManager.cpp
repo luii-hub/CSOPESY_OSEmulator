@@ -9,7 +9,7 @@
 ConfigurationManager::ConfigurationManager()
 	: numCPU(0), quantumCycles(0), batchProcessFrequency(0), minInstructions(0), maxInstructions(0),
 	  delayPerExec(0), maxOverallMemory(0), memoryPerFrame(0), minMemoryPerProcess(0), maxMemoryPerProcess(0),
-	  memoryManagerAlgorithm(""), maxFrames(0)
+	  memoryManagerAlgorithm("")
 {
 }
 
