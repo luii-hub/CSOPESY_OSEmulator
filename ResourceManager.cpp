@@ -38,12 +38,12 @@ std::shared_ptr<Process> ResourceManager::createProcess(std::string process_name
 
 	// Generate random values for the process
 	int randomMaxInstructions = getRandomInt(configManager->getMinInstructions(), configManager->getMaxInstructions());
-	int randomPage = getRandomInt(configManager->getMinPagePerProcess(), configManager->getMaxPagePerProcess());
-	int randomMemory = getRandomInt2N(configManager->getMinMemoryPerProcess(), configManager->getMaxMemoryPerProcess());
+	int pageSize = getRandomInt2N(configManager->getMemoryPerFrame());
+	int randomMemory = getRandomInt2N(configManager->getMaxMemoryPerProcess(), configManager->getMinMemoryPerProcess());
 	
 
 	// Create a new process
-	auto newProcess = std::make_shared<Process>(process_name, processCounter, randomMaxInstructions, randomMemory, randomPage);
+	auto newProcess = std::make_shared<Process>(process_name, processCounter, randomMaxInstructions, randomMemory, pageSize);
 	processes.push_back(newProcess);
 	processesMasterList.push_back(newProcess);
 
@@ -127,7 +127,7 @@ int ResourceManager::getRandomInt (int min, int max) {
 	return dis(gen);
 }
 
-int ResourceManager::getRandomInt2N(int min, int max) {
+int ResourceManager::getRandomInt2N(int max, int min) {
 
 	int minExp = std::ceil(std::log2(min));
 	// Calculate the largest power of 2 less than or equal to max
