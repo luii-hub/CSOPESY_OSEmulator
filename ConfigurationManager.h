@@ -42,10 +42,6 @@ private:
 	float memoryPerFrame;
 	float minMemoryPerProcess;
 	float maxMemoryPerProcess;
-	/*float minPagePerProcess;
-	float maxPagePerProcess;*/
 	std::string memoryManagerAlgorithm;
-
-	float maxFrames;
 };
 

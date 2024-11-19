@@ -1,7 +1,7 @@
 #include <iostream>
 #include "MemoryManager.h"
 
-MemoryManager::MemoryManager() : running(false), backingStore("backing_store.txt") // Initialize running to false
+MemoryManager::MemoryManager() : backingStore("backing_store.txt"), running(false) // Initialize running to false
 {}
 
 MemoryManager::~MemoryManager() {

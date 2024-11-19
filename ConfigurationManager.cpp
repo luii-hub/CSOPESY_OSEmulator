@@ -14,7 +14,7 @@ ConfigurationManager::ConfigurationManager()
 }
 
 ConfigurationManager::~ConfigurationManager()
-{}
+= default;
 
 bool ConfigurationManager::initialize()
 {

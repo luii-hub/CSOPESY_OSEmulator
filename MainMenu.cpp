@@ -10,9 +10,7 @@ MainMenu::MainMenu()
 	: AConsole("MAIN_MENU"){
 }
 
-MainMenu::~MainMenu(){
-
-}
+MainMenu::~MainMenu() = default;
 
 void MainMenu::onExecute(){
 	display(); 
