@@ -65,7 +65,7 @@ private:
 
     int processCounter;
     int getRandomInt(int min, int max); // Randomizer for the process details
-    int getRandomInt2N(int max, int min = 1); // Randomizer for the process details wherein number = 2^n
+    int getRandomInt2N(int max, int min = 2); // Randomizer for the process details wherein number = 2^n
 
     std::thread allocationThread;
     void startAllocationThread();
