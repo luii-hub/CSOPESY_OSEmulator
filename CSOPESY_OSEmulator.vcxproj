@@ -118,6 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -136,6 +137,7 @@
     <ClCompile Include="FlatAllocator.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MemoryManager.cpp" />
+    <ClCompile Include="PagingAllocator.cpp" />
     <ClCompile Include="Process.cpp" />
     <ClCompile Include="ProcessScreen.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
@@ -152,6 +154,7 @@
     <ClInclude Include="FlatAllocator.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="MemoryManager.h" />
+    <ClInclude Include="PagingAllocator.h" />
     <ClInclude Include="Process.h" />
     <ClInclude Include="ProcessScreen.h" />
     <ClInclude Include="ResourceManager.h" />
