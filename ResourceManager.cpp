@@ -431,3 +431,21 @@ void ResourceManager::displayAllProcesses() {
 	std::cout << "=========================\n";
 }
 
+void ResourceManager::displayVMStat() {
+	std::vector<long long> stats = getCoreStats();
+	int usedMemory = memoryManager.getUsedMemory();
+	int activeMemory = memoryManager.getActiveMemory();
+	int inactiveMemory = memoryManager.getInactiveMemory();
+	int pagedIn = memoryManager.pagingAllocator.getNumPagesPagedIn();
+	int pagedOut = memoryManager.pagingAllocator.getNumPagesPagedOut();
+
+	std::cout << configManager->getMaxOverallMemory() << " KB total memory\n";
+	std::cout << usedMemory << " KB used memory\n"; // Total used memory, including possible external fragmentation
+	std::cout << activeMemory << " KB active memory\n"; // Total active memory used by processes. This doesn’t include possible external fragmentation.
+	std::cout << inactiveMemory << " KB inactive memory\n"; // External Fragmentation
+	std::cout << stats[2] << " idle cpu ticks\n";
+	std::cout << stats[1] << " active cpu ticks\n";
+	std::cout << stats[0] << " total cpu ticks\n";
+	std::cout << pagedIn << " pages paged in\n";
+	std::cout << pagedOut << " pages paged out\n";
+}

@@ -161,6 +161,9 @@ void MainMenu::handleCommand(string command) {
 		else if (command == "process-smi") {
             consoleManager.getResourceManager().displayProcessSmi();
         }
+        else if (command == "vmstat") {
+            consoleManager.getResourceManager().displayVMStat();
+        }
         else {
             cout << "Invalid command. Please try again." << endl;
         }
