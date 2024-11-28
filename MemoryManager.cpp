@@ -124,7 +124,7 @@ BackingStore* MemoryManager::getBackingStore() {
 
 int MemoryManager::getUsedMemory() {
     int totalActiveMemory = 0;
-    if (configManager->getSchedulerAlgorithm() == "flat") {
+    if (allocationType == "flat") {
         totalActiveMemory = flatAllocator.getUsedMemory();
     }
     else {
