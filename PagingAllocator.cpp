@@ -15,7 +15,10 @@ void PagingAllocator::initialize(ConfigurationManager* configManager) {
 }
 
 bool PagingAllocator::allocate(Process process, std::function<void(std::shared_ptr<Process>)> swapOutCallback) {
-    int pagesNeeded = pageSize;
+    int pagesNeeded = static_cast<int>(std::ceil(process.getMemorySize() / static_cast<float>(pageSize)));
+    std::cout << pagesNeeded << " total pages needed\n"; // FOR DEBUGGING ONLY - REMOVE
+    std::cout << pageSize << " page size\n"; // FOR DEBUGGING ONLY - REMOVE
+    std::cout << process.getMemorySize() << " memory size\n"; // FOR DEBUGGING ONLY - REMOVE
     std::vector<int> allocatedFrames;
 
     while (pagesNeeded > 0) {
@@ -119,19 +122,23 @@ int PagingAllocator::getUsedMemory(std::vector<std::shared_ptr<Process>> process
     int usedMemory = 0;
 
     for (const auto& process : processes) {
-        // Get the process ID from the process object
         int pid = process->getID();
 
-        // Find the process ID in the process page table
+        // Check if the process is in the page table
         auto it = processPageTable.find(pid);
         if (it != processPageTable.end()) {
-            // Calculate the memory used by this process
-            usedMemory += (it->second.size() * process->getPageSize());
+            // Add memory used by this process
+            usedMemory += static_cast<int>(it->second.size()) * pageSize;
+        }
+        else {
+            // Optional: Debug/logging for processes without allocated memory
+            std::cout << "Process ID " << pid << " has no allocated pages." << std::endl;
         }
     }
 
     return usedMemory;
 }
+
 
 std::vector<int> PagingAllocator::getProcessKeys() const {
     std::vector<int> processIDs;
@@ -147,14 +154,4 @@ int PagingAllocator::getNumPagesPagedIn() const {
 
 int PagingAllocator::getNumPagesPagedOut() const {
     return numPagesPagedOut;
-}
-
-int PagingAllocator::getInactiveMemory(const std::unordered_set<int>& runningProcessIDs) const {
-    int inactiveMemory = 0;
-    for (const auto& entry : processPageTable) {
-        if (runningProcessIDs.find(entry.first) == runningProcessIDs.end()) {
-            inactiveMemory += entry.second.size() * pageSize;
-        }
-    }
-    return inactiveMemory;
 }

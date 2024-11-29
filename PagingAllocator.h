@@ -24,7 +24,6 @@ public:
     int getNumPagesPagedIn() const;
     int getNumPagesPagedOut() const;
 
-    int getInactiveMemory(const std::unordered_set<int>& runningProcessIDs) const;
 
 private:
     ConfigurationManager* configManager;

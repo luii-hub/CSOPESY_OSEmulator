@@ -125,9 +125,11 @@ BackingStore* MemoryManager::getBackingStore() {
 int MemoryManager::getUsedMemory() {
     int totalActiveMemory = 0;
     if (allocationType == "flat") {
+        std::cout << "Got flat memory!\n"; // for debugging only REMOVE AFTER
         totalActiveMemory = flatAllocator.getUsedMemory();
     }
-    else {
+    else if (allocationType == "paging") {
+        std::cout << "Got paging memory!\n"; // for debugging only REMOVE AFTER
         std::vector<int> processIDs = pagingAllocator.getProcessKeys();
         std::vector<std::shared_ptr<Process>> allocatedProcesses;
 
@@ -138,5 +140,7 @@ int MemoryManager::getUsedMemory() {
 
         totalActiveMemory = pagingAllocator.getUsedMemory(allocatedProcesses);
     }
+    else
+        std::cout << "Got no memory\n"; // for debugging only REMOVE AFTER
     return totalActiveMemory;
 }
