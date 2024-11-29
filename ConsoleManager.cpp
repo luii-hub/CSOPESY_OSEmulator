@@ -108,7 +108,7 @@ ResourceManager& ConsoleManager::getResourceManager() {
 
 // Create a new process screen and add it to the console manager
 void ConsoleManager::createProcessScreen(const std::string processName) {
-	
+
 	std::shared_ptr<Process> processPointer = resourceManager.createProcess(processName); // Create a new process
 
 	auto processScreen = std::make_shared<ProcessScreen>(processPointer); // Create a new ProcessScreen for the process

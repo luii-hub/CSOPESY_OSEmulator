@@ -122,23 +122,12 @@ BackingStore* MemoryManager::getBackingStore() {
     return &backingStore;
 }
 
-int MemoryManager::getActiveMemory() {
-    int totalActiveMemory = 0;
-    for (const auto& core : scheduler->getCores()) {
-        auto process = core->getCurrentProcess();
-        if (process) {
-            totalActiveMemory += process->getMemorySize();
-        }
-    }
-    return totalActiveMemory;
-}
-
 int MemoryManager::getUsedMemory() {
     int totalActiveMemory = 0;
-    if (configManager->getSchedulerAlgorithm() == "flat") {
+    if (allocationType == "flat") {
         totalActiveMemory = flatAllocator.getUsedMemory();
     }
-    else {
+    else if (allocationType == "paging") {
         std::vector<int> processIDs = pagingAllocator.getProcessKeys();
         std::vector<std::shared_ptr<Process>> allocatedProcesses;
 
@@ -150,15 +139,4 @@ int MemoryManager::getUsedMemory() {
         totalActiveMemory = pagingAllocator.getUsedMemory(allocatedProcesses);
     }
     return totalActiveMemory;
-}
-
-int MemoryManager::getInactiveMemory() {
-    int totalInactiveMemory = 0;
-    if (configManager->getSchedulerAlgorithm() == "flat") {
-        totalInactiveMemory = flatAllocator.getInactiveMemory(getRunningProcessIDs());
-    }
-    else {
-        totalInactiveMemory = pagingAllocator.getInactiveMemory(getRunningProcessIDs());
-    }
-    return totalInactiveMemory;
 }

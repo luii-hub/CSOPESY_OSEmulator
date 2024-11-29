@@ -18,7 +18,7 @@ ResourceManager::~ResourceManager() {
 	stopAllocationThread();
 }
 
-bool ResourceManager::initialize(ConfigurationManager* newConfigManager){	
+bool ResourceManager::initialize(ConfigurationManager* newConfigManager) {
 	configManager = newConfigManager;
 
 	// Initialize the scheduler and memory manager
@@ -26,7 +26,8 @@ bool ResourceManager::initialize(ConfigurationManager* newConfigManager){
 		running = true;
 		startAllocationThread();
 		return true;
-	} else {
+	}
+	else {
 		return false;
 	}
 }
@@ -40,7 +41,7 @@ std::shared_ptr<Process> ResourceManager::createProcess(std::string process_name
 	int randomMaxInstructions = getRandomInt(configManager->getMinInstructions(), configManager->getMaxInstructions());
 	int pageSize = getRandomInt2N(configManager->getMemoryPerFrame());
 	int randomMemory = getRandomInt2N(configManager->getMaxMemoryPerProcess(), configManager->getMinMemoryPerProcess());
-	
+
 
 	// Create a new process
 	auto newProcess = std::make_shared<Process>(process_name, processCounter, randomMaxInstructions, randomMemory, pageSize);
@@ -116,7 +117,7 @@ void ResourceManager::stopAllocationThread() {
 	}
 }
 
-int ResourceManager::getRandomInt (int min, int max) {
+int ResourceManager::getRandomInt(int min, int max) {
 	static std::random_device rd;  // Seed for the random number engine
 	static std::mt19937 gen(rd()); // Mersenne Twister random number engine
 
@@ -189,7 +190,7 @@ void ResourceManager::schedulerTestLoop() {
 	while (schedulerTest) {
 		schedulerCounter++;
 		int processID = schedulerCounter;
-		std:: string processName = "process_test" + std::to_string(processID);
+		std::string processName = "process_test" + std::to_string(processID);
 		std::shared_ptr<Process> processPointer = createProcess(processName);
 		auto processScreen = std::make_shared<ProcessScreen>(processPointer);
 
@@ -260,8 +261,8 @@ void ResourceManager::displayProcessSmi() {
 	std::cout << "| PROCESS-SMI V01.00 Driver Version 01.00 | \n";
 	std::cout << "--------------------------------------------\n";
 	std::cout << "CPU-Util: " << getCPUUtilization() << "%\n";
-	std::cout << "Memory Usage: " << memoryManager.getUsedMemory() << "/" << configManager->getMaxOverallMemory()  << "\n";
-	std::cout << "Memory-Util: "<< getMemoryUtilization() << "%" << "%\n";
+	std::cout << "Memory Usage: " << memoryManager.getUsedMemory() << "/" << configManager->getMaxOverallMemory() << "\n";
+	std::cout << "Memory-Util: " << getMemoryUtilization() << "%" << "%\n";
 	std::cout << "============================================	\n";
 	std::cout << "Running processes and memory usage: \n";
 	std::cout << "--------------------------------------------\n";
@@ -274,6 +275,23 @@ void ResourceManager::displayProcessSmi() {
 		}
 	}
 	std::cout << "--------------------------------------------\n";
+}
+
+void ResourceManager::displayVMStat() {
+	std::vector<long long> stats = getCoreStats();
+	int usedMemory = memoryManager.getUsedMemory();
+	int freeMemory = configManager->getMaxOverallMemory() - usedMemory;
+	int pagedIn = memoryManager.pagingAllocator.getNumPagesPagedIn();
+	int pagedOut = memoryManager.pagingAllocator.getNumPagesPagedOut();
+
+	std::cout << configManager->getMaxOverallMemory() << " KB total memory\n";
+	std::cout << usedMemory << " KB used memory\n"; // Total used memory
+	std::cout << freeMemory << " KB free memory\n"; // Total free memory
+	std::cout << stats[2] << " idle cpu ticks\n";
+	std::cout << stats[1] << " active cpu ticks\n";
+	std::cout << stats[0] << " total cpu ticks\n";
+	std::cout << pagedIn << " pages paged in\n";
+	std::cout << pagedOut << " pages paged out\n";
 }
 
 int ResourceManager::getCPUUtilization() {
@@ -429,23 +447,4 @@ void ResourceManager::displayAllProcesses() {
 		std::cout << process->getName() << "\n";
 	}
 	std::cout << "=========================\n";
-}
-
-void ResourceManager::displayVMStat() {
-	std::vector<long long> stats = getCoreStats();
-	int usedMemory = memoryManager.getUsedMemory();
-	int activeMemory = memoryManager.getActiveMemory();
-	int inactiveMemory = memoryManager.getInactiveMemory();
-	int pagedIn = memoryManager.pagingAllocator.getNumPagesPagedIn();
-	int pagedOut = memoryManager.pagingAllocator.getNumPagesPagedOut();
-
-	std::cout << configManager->getMaxOverallMemory() << " KB total memory\n";
-	std::cout << usedMemory << " KB used memory\n"; // Total used memory, including possible external fragmentation
-	std::cout << activeMemory << " KB active memory\n"; // Total active memory used by processes. This doesn’t include possible external fragmentation.
-	std::cout << inactiveMemory << " KB inactive memory\n"; // External Fragmentation
-	std::cout << stats[2] << " idle cpu ticks\n";
-	std::cout << stats[1] << " active cpu ticks\n";
-	std::cout << stats[0] << " total cpu ticks\n";
-	std::cout << pagedIn << " pages paged in\n";
-	std::cout << pagedOut << " pages paged out\n";
 }
