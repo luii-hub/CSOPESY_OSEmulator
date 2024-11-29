@@ -123,13 +123,3 @@ int FlatAllocator::getUsedMemory() {
     }
     return usedMemory;
 }
-
-int FlatAllocator::getInactiveMemory(const std::unordered_set<int>& runningProcessIDs) {
-    int inactiveMemory = 0;
-    for (const auto& block : memoryBlocks) {
-        if (!block.isFree && runningProcessIDs.find(block.start) == runningProcessIDs.end()) {
-            inactiveMemory += block.size;
-        }
-    }
-    return inactiveMemory;
-}
