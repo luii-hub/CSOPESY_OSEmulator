@@ -16,9 +16,6 @@ void PagingAllocator::initialize(ConfigurationManager* configManager) {
 
 bool PagingAllocator::allocate(Process process, std::function<void(std::shared_ptr<Process>)> swapOutCallback) {
     int pagesNeeded = static_cast<int>(std::ceil(process.getMemorySize() / static_cast<float>(pageSize)));
-    std::cout << pagesNeeded << " total pages needed\n"; // FOR DEBUGGING ONLY - REMOVE
-    std::cout << pageSize << " page size\n"; // FOR DEBUGGING ONLY - REMOVE
-    std::cout << process.getMemorySize() << " memory size\n"; // FOR DEBUGGING ONLY - REMOVE
     std::vector<int> allocatedFrames;
 
     while (pagesNeeded > 0) {
