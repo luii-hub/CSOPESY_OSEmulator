@@ -1,8 +1,9 @@
 #include <iostream>
 #include "MemoryManager.h"
 
-MemoryManager::MemoryManager() : running(false), backingStore("backing_store.txt") // Initialize running to false
-{}
+MemoryManager::MemoryManager() : backingStore("backing_store.txt"), running(false) // Initialize running to false
+{
+}
 
 MemoryManager::~MemoryManager() {
     stop();
@@ -74,7 +75,7 @@ bool MemoryManager::allocate(Process process) {
 
             return pagingAllocator.allocate(process, [this](std::shared_ptr<Process> process) {
                 this->backingStore.storeProcess(process);
-            });
+                });
         }
         else {
             return true;

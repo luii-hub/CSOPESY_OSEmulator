@@ -38,12 +38,12 @@ std::shared_ptr<Process> ResourceManager::createProcess(std::string process_name
 
 	// Generate random values for the process
 	int randomMaxInstructions = getRandomInt(configManager->getMinInstructions(), configManager->getMaxInstructions());
-	int randomPage = getRandomInt(configManager->getMinPagePerProcess(), configManager->getMaxPagePerProcess());
-	int randomMemory = getRandomInt2N(configManager->getMinMemoryPerProcess(), configManager->getMaxMemoryPerProcess());
+	int pageSize = getRandomInt2N(configManager->getMemoryPerFrame());
+	int randomMemory = getRandomInt2N(configManager->getMaxMemoryPerProcess(), configManager->getMinMemoryPerProcess());
 	
 
 	// Create a new process
-	auto newProcess = std::make_shared<Process>(process_name, processCounter, randomMaxInstructions, randomMemory, randomPage);
+	auto newProcess = std::make_shared<Process>(process_name, processCounter, randomMaxInstructions, randomMemory, pageSize);
 	processes.push_back(newProcess);
 	processesMasterList.push_back(newProcess);
 
@@ -127,7 +127,7 @@ int ResourceManager::getRandomInt (int min, int max) {
 	return dis(gen);
 }
 
-int ResourceManager::getRandomInt2N(int min, int max) {
+int ResourceManager::getRandomInt2N(int max, int min) {
 
 	int minExp = std::ceil(std::log2(min));
 	// Calculate the largest power of 2 less than or equal to max
@@ -275,26 +275,6 @@ void ResourceManager::displayProcessSmi() {
 	}
 	std::cout << "--------------------------------------------\n";
 }
-
-void ResourceManager::displayVMStat() {
-	std::vector<long long> stats = getCoreStats();
-	int usedMemory = memoryManager.getUsedMemory();
-	int activeMemory = memoryManager.getActiveMemory();
-	int inactiveMemory = memoryManager.getInactiveMemory();
-	int pagedIn = memoryManager.pagingAllocator.getNumPagesPagedIn();
-	int pagedOut = memoryManager.pagingAllocator.getNumPagesPagedOut();
-
-	std::cout << configManager->getMaxOverallMemory() << " KB total memory\n";
-	std::cout << usedMemory << " KB used memory\n"; // Total used memory, including possible external fragmentation
-	std::cout << activeMemory << " KB active memory\n"; // Total active memory used by processes. This doesn’t include possible external fragmentation.
-	std::cout << inactiveMemory << " KB inactive memory\n"; // External Fragmentation
-	std::cout << stats[2] << " idle cpu ticks\n"; 
-	std::cout << stats[1] << " active cpu ticks\n";
-	std::cout << stats[0] << " total cpu ticks\n";
-	std::cout << pagedIn << " pages paged in\n";
-	std::cout << pagedOut << " pages paged out\n";
-}
-
 
 int ResourceManager::getCPUUtilization() {
 	int coresUsed = 0;
@@ -451,3 +431,21 @@ void ResourceManager::displayAllProcesses() {
 	std::cout << "=========================\n";
 }
 
+void ResourceManager::displayVMStat() {
+	std::vector<long long> stats = getCoreStats();
+	int usedMemory = memoryManager.getUsedMemory();
+	int activeMemory = memoryManager.getActiveMemory();
+	int inactiveMemory = memoryManager.getInactiveMemory();
+	int pagedIn = memoryManager.pagingAllocator.getNumPagesPagedIn();
+	int pagedOut = memoryManager.pagingAllocator.getNumPagesPagedOut();
+
+	std::cout << configManager->getMaxOverallMemory() << " KB total memory\n";
+	std::cout << usedMemory << " KB used memory\n"; // Total used memory, including possible external fragmentation
+	std::cout << activeMemory << " KB active memory\n"; // Total active memory used by processes. This doesn’t include possible external fragmentation.
+	std::cout << inactiveMemory << " KB inactive memory\n"; // External Fragmentation
+	std::cout << stats[2] << " idle cpu ticks\n";
+	std::cout << stats[1] << " active cpu ticks\n";
+	std::cout << stats[0] << " total cpu ticks\n";
+	std::cout << pagedIn << " pages paged in\n";
+	std::cout << pagedOut << " pages paged out\n";
+}

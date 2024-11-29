@@ -17,8 +17,7 @@ ConsoleManager::ConsoleManager()
 
 // Destructor for ConsoleManager (empty because shared_ptr handles cleanup)
 ConsoleManager::~ConsoleManager()
-{
-}
+= default;
 
 // Main loop function to execute the current console
 void ConsoleManager::run() {

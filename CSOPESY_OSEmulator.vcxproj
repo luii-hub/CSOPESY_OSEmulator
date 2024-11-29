@@ -118,6 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -133,7 +134,7 @@
     <ClCompile Include="ConsoleManager.cpp" />
     <ClCompile Include="CoreWorker.cpp" />
     <ClCompile Include="CSOPESY_OSEmulator.cpp" />
-    <ClCompile Include="FlatMemoryAllocator.cpp" />
+    <ClCompile Include="FlatAllocator.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MemoryManager.cpp" />
     <ClCompile Include="PagingAllocator.cpp" />
@@ -150,7 +151,7 @@
     <ClInclude Include="ConfigurationManager.h" />
     <ClInclude Include="ConsoleManager.h" />
     <ClInclude Include="CoreWorker.h" />
-    <ClInclude Include="FlatMemoryAllocator.h" />
+    <ClInclude Include="FlatAllocator.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="PagingAllocator.h" />

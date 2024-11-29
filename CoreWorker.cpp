@@ -3,7 +3,7 @@
 #include <iostream>
 
 CoreWorker::CoreWorker(int id, float delayPerExec, float quantumSlice) 
-    : id(id), delayPerExec(delayPerExec), quantumSlice(quantumSlice), running(false), processAssigned(false) {}
+    : id(id), running(false), processAssigned(false), delayPerExec(delayPerExec), quantumSlice(quantumSlice) {}
 
 CoreWorker::~CoreWorker() {
     stop();

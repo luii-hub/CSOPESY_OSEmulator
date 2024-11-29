@@ -14,10 +14,10 @@ struct MemoryBlock {
 	bool isFree;	// is the block free?
 };
 
-class FlatMemoryAllocator
+class FlatAllocator
 {
 public:
-	FlatMemoryAllocator();
+	FlatAllocator();
 
 	void initialize(ConfigurationManager* configManager); // initialize memory blocks
 	bool allocate(Process process);	// allocate memory for a process
@@ -27,7 +27,7 @@ public:
 
 	int getUsedMemory(); // returns active + idle processes 
 	int getInactiveMemory(const std::unordered_set<int>& runningProcessIDs);
-	
+
 private:
 	ConfigurationManager* configManager;
 	std::vector<MemoryBlock> memoryBlocks; // memory blocks

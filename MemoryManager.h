@@ -6,17 +6,17 @@
 
 #include "ConfigurationManager.h"
 #include "Process.h"
-#include "FlatMemoryAllocator.h"
-#include "PagingAllocator.h"
 #include "Scheduler.h"
 #include "BackingStore.h"
+#include "FlatAllocator.h"
+#include "PagingAllocator.h"
 
 class MemoryManager
 {
 public:
     MemoryManager();
     ~MemoryManager();
-    FlatMemoryAllocator flatAllocator;
+    FlatAllocator flatAllocator;
     PagingAllocator pagingAllocator;
 
     bool initialize(ConfigurationManager* configManager, Scheduler* scheduler);
@@ -37,7 +37,7 @@ private:
     ConfigurationManager* configManager;
     Scheduler* scheduler;
     BackingStore backingStore;
-    
+
     std::string allocationType;
 
     std::thread memoryThread;

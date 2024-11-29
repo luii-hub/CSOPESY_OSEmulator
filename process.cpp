@@ -11,12 +11,12 @@ Process::Process() : id(0), totalInstructions(0), memorySize(0), pageSize(0) {
 
 Process::Process(std::string name, int id, int totalInstructions, float memorySize, float pageSize)
 	:	processName(name), 
-		id(id), 
-		currentInstruction(0), 
-		totalInstructions(totalInstructions), 
-		core(-1), 
-		finished(false), 
+		id(id),
+		core(-1),
 		creationTime(std::chrono::system_clock::now()),
+		finished(false),
+		currentInstruction(0),
+		totalInstructions(totalInstructions),
 		memorySize(memorySize),
 		pageSize(pageSize)
 
