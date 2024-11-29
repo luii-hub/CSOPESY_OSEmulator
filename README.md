@@ -30,16 +30,21 @@ This project simulates an Operating System Emulator (OSEmulator) designed to man
 ## **Files and Directory Structure**
 
 ### **Source Files**
-| File              | Description                                                                                                                                                          |
-|-------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **CSOPESY_OSEmulator**| Contains the `main` function. This is where the program begins execution where it instantiates the ConsoleManager   |
-| **ConsoleManager**   | This class manages the system configuration, including reading from a configuration file (config.txt) and providing access to configuration parameters.                |
-| **ConfigurationManager** | This class manages the system configuration, including reading from a configuration file (config.txt) and providing access to configuration parameters.                   |
-| **ResourceManager**| This class manages the creation, scheduling, memory allocation, and resource monitoring for processes. It interacts with the ConsoleManager, Scheduler, and MemoryManager to handle resource distribution and utilization within the system.  |
-| **AConsole**| This abstract base class defines a generic console interface with methods for execution, display, and processing. It is designed to be inherited by specific console implementations, like MainMenu, processScreens.   |
-| **MainMenu**   | This class represents the main menu screen, providing the user with a command-line interface to interact with the console manager, access different screens, and manage processes.                |
-| **ProcessScreen** | This class represents the console screen for a specific process, allowing users to view process details and interact with the process through commands.                   |
-| **Process** | This class represents a single process, tracking its execution state, memory usage, and core assignment. It provides methods for executing instructions and checking the process's status.  |
-| **CoreWorker**| This class represents a single CPU core responsible for executing processes. It manages process assignments, tracks CPU usage, and interacts with the scheduler to reassign or complete processes   |
-| **Scheduler**   | This class manages CPU scheduling, assigning processes to cores based on the scheduling algorithm specified in the configuration. It supports both First-Come, First-Served (FCFS) and Round-Robin (RR) scheduling.                |
-| **Styles** | This class simply contains styling and formatting functions used for the UI                   |
+| File                          | Description                                                                                                                                                                             |
+|-------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **CSOPESY_OSEmulator.cpp**     | Contains the `main()` function where the program begins execution. This file instantiates the `ConsoleManager` to initialize the system and manage user interactions.                    |
+| **ConsoleManager.cpp**         | Manages the system configuration, including loading settings from the `config.txt` file, handling system initialization, and providing access to configuration parameters.               |
+| **ConfigurationManager.cpp**   | Responsible for reading and parsing the configuration file (`config.txt`) and storing system parameters like scheduling algorithms, memory settings, and other configurations.           |
+| **ResourceManager.cpp**        | Handles the allocation of system resources such as memory and CPU cores, manages process creation, scheduling, and monitors resource usage in collaboration with the scheduler.          |
+| **AConsole.cpp**               | An abstract base class that defines a generic interface for console screens. Inherited by specific console screens like `MainMenu` and `ProcessScreen` for further customization.        |
+| **MainMenu.cpp**               | Displays the main menu, allowing users to interact with the emulator. Provides access to process management, screen sessions, and system configurations through the command-line interface.|
+| **ProcessScreen.cpp**          | Represents the console screen for individual processes, displaying process details like memory usage, execution state, and enabling user interaction with the processes.                |
+| **Process.cpp**                | Defines the `Process` class, which tracks the process's execution state, memory usage, CPU core assignment, and provides methods to execute instructions and check process status.       |
+| **CoreWorker.cpp**             | Represents a CPU core. Each `CoreWorker` is responsible for executing processes assigned to it, managing core utilization, and interacting with the scheduler to reassign or complete tasks.|
+| **Scheduler.cpp**              | Manages the CPU scheduling algorithm (FCFS or Round-Robin) and assigns processes to available CPU cores based on the chosen scheduling strategy.                                       |
+| **Styles.cpp**                 | Contains functions for styling and formatting the user interface in the command line, ensuring a structured and readable display of the system's status and output.                    |
+| **PagingAllocator.cpp**        | Implements the paging memory allocation system. This class manages the translation between virtual and physical memory, dividing memory into fixed-size pages and handling paging.       |
+| **MemoryManager.cpp**          | Manages memory allocation and deallocation. This class integrates with the `FlatMemoryAllocator` and `PagingAllocator` to manage both flat and paged memory schemes, providing efficient memory handling for processes. |
+| **FlatMemoryAllocator.cpp**    | Implements flat memory allocation, providing a simple method of allocating contiguous memory blocks to processes without any segmentation or paging.                                   |
+| **BackingStore.cpp**           | Simulates a backing store (typically used in virtual memory systems) that provides additional storage space when the system's main memory is full. It manages swapping data between memory and disk storage. |
+
